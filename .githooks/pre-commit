@@ -35,8 +35,32 @@ if git diff --cached --quiet --diff-filter=d -- "$@"; then
   exit 0
 fi
 
-if ! git diff --cached --name-only -z --diff-filter=d -- "$@" \
-  | xargs -0 dart format --output=none --set-exit-if-changed; then
+# El chequeo corre sobre el contenido del INDICE, no sobre el del disco.
+#
+# Enumerar los paths stageados y despues formatear los archivos del working
+# tree es lo mismo sólo cuando el archivo esta stageado entero. Con staging
+# parcial son dos contenidos distintos, y el hook termina aprobando un blob que
+# no miro: se stagea una version sin formatear, se arregla el formato en el
+# disco sin stagearlo, y el commit pasa con el blob feo adentro. Medido: pasa.
+#
+# `git show :<path>` es el contenido exacto que se va a commitear. Se
+# materializa en un temporal conservando el path relativo —el formateador
+# necesita la extension .dart, y asi el mensaje de error nombra el archivo de
+# verdad y no un hash.
+tmpdir=$(mktemp -d) || exit 1
+salida=$(mktemp) || exit 1
+trap 'rm -rf "$tmpdir" "$salida"' EXIT
+export tmpdir
+
+git diff --cached --name-only -z --diff-filter=d -- "$@" \
+  | xargs -0 -n 1 sh -c 'mkdir -p "$tmpdir/$(dirname "$1")" && git show ":$1" > "$tmpdir/$1"' sh
+
+# La salida va a un archivo y el `sed` corre despues, no en un pipe: `if ! a | b`
+# testea el exit code de `b`, y `sed` siempre sale 0. Encadenado, este chequeo
+# aprobaria todo.
+if ! find "$tmpdir" -name '*.dart' \
+  -exec dart format --output=none --set-exit-if-changed {} + >"$salida" 2>&1; then
+  sed "s|$tmpdir/||" "$salida" >&2
   cat >&2 <<'MSG'
 
 Hay archivos sin formatear en el commit. Para arreglarlo:
