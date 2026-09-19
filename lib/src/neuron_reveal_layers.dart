@@ -101,7 +101,17 @@ class _NeuronRevealLayers extends StatelessWidget {
   /// Se monta al entrar en su fase —montarlo es lo que dispara su tiro unico— y
   /// se queda hasta el final: desmontarlo costaria un remontaje mas del hijo y
   /// no compraria nada, porque con su controller en 1 devuelve el hijo pelado.
+  ///
+  /// **Con el contenido todavia ausente no se monta ninguno.** El punto de
+  /// espera es el arranque de la primera fase de resolucion presente, asi que
+  /// una lista de fases sin `condense` lo deja justo en `chromatic`: el
+  /// revelado se para ahi, pero la fase activa ya es esa y la rafaga se
+  /// montaria igual. Como dispara al montarse y una sola vez, el pico se
+  /// gastaria contra un hijo oculto y no quedaria nada para cuando el contenido
+  /// llegue. Con `condense` presente no pasa —la espera cae antes—, que es por
+  /// lo que no se veia con las fases por default.
   bool _burstIsMounted(NeuronPhase? current, NeuronPhase phase) =>
+      config.ready &&
       timeline.contains(phase) &&
       current != null &&
       current.index >= phase.index;

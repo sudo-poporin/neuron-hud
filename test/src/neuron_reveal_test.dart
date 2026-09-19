@@ -393,6 +393,37 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
+        _host(
+          const NeuronReveal(
+            ready: false,
+            phases: [
+              NeuronPhase.guides,
+              NeuronPhase.dots,
+              NeuronPhase.noise,
+              NeuronPhase.chromatic,
+              NeuronPhase.slice,
+              NeuronPhase.settle,
+            ],
+            child: child,
+          ),
+        ),
+      );
+      await tester.pump();
+      await _pumpFrames(tester, _framesFor(guides + dots + noise) + 4);
+
+      // Sin `condense`, el punto de espera cae en el arranque de `chromatic`.
+      // La rafaga dispara **al montarse** y una sola vez: si se monta mientras
+      // el contenido todavia no llego, el pico se gasta contra un hijo oculto y
+      // cuando el contenido aparece ya no queda aberracion que mostrar.
+      expect(find.byType(ChromaticBurst), findsNothing);
+
+      await tester.pumpWidget(_host(const SizedBox()));
+    });
+
+    testWidgets('con ready en false el burst no se consume esperando', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
         _host(const NeuronReveal(ready: false, child: child)),
       );
       await tester.pump();
