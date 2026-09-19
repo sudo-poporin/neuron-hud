@@ -296,6 +296,34 @@ void main() {
       await tester.pumpWidget(_host(const SizedBox()));
     });
 
+    testWidgets('con duration en cero, la linea se sostiene durante lineHold', (
+      tester,
+    ) async {
+      // `duration` en cero con `lineHold` positivo deja la fraccion de pausa en
+      // 1, y ese es justo el valor que la rama de arriba trata como "no hay
+      // pausa". El contrato dice lo contrario: la linea se sostiene sola
+      // durante `lineHold` y despues el panel se abre, aca de golpe.
+      await tester.pumpWidget(
+        _host(
+          const ExpandLine(
+            duration: Duration.zero,
+            lineHold: Duration(milliseconds: 120),
+            child: child,
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 60));
+
+      expect(tester.getSize(find.byType(ExpandLine)).height, 1);
+
+      await tester.pump(const Duration(milliseconds: 80));
+
+      expect(tester.getSize(find.byType(ExpandLine)).height, 100);
+
+      await tester.pumpWidget(_host(const SizedBox()));
+    });
+
     testWidgets('un lineHold negativo no abre el panel a medias', (
       tester,
     ) async {

@@ -107,8 +107,16 @@ class _ExpandLineState extends State<ExpandLine>
       child: widget.child,
       builder: (context, child) {
         final hold = _holdFraction;
+        // Con la fraccion en 1 no queda recorrido para crecer, y hay dos
+        // maneras de llegar ahi que piden cosas distintas. Con `_total` en cero
+        // —las dos duraciones en cero, la forma soportada de desactivar el
+        // efecto— el controller ya esta en 1 y el panel tiene que estar
+        // abierto. Con `duration` en cero y `lineHold` positivo hay recorrido:
+        // es todo pausa, y la linea tiene que sostenerse sola hasta el final y
+        // recien ahi abrirse de golpe. Devolver 1 en los dos casos abria el
+        // panel desde el primer frame y se comia la pausa entera.
         final growth = hold >= 1
-            ? 1.0
+            ? (_controller.value >= 1 ? 1.0 : 0.0)
             : ((_controller.value - hold) / (1 - hold)).clamp(0.0, 1.0);
         // El clamp no es defensivo de mas: una curva con rebote —easeOutBack,
         // elasticIn— devuelve valores fuera de 0..1, y `Align.heightFactor`
