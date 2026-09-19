@@ -1,0 +1,49 @@
+#!/bin/sh
+#
+# Corre el check de dart format sobre los archivos .dart que van en el commit.
+#
+# Chequea y aborta: no formatea ni hace git add. Un hook que arregla el formato
+# solo mete en el commit cambios que nadie miro, y con staging parcial —hunks
+# stageados y otros no en el mismo archivo— sube ademas lo que se habia dejado
+# afuera a proposito.
+#
+# Las exclusiones son las mismas del pre-push y las del step "Check format" de
+# .github/workflows/test.yml. Si divergen, un lado pasa y el otro falla, que es
+# el peor de los dos mundos.
+#
+# Activacion, una vez por clon:
+#   git config core.hooksPath .githooks
+
+set -e
+
+# El filtrado va con pathspecs de git y salida -z, no con grep sobre
+# --name-only. Dos razones:
+#
+#   - --name-only quotea los paths con caracteres especiales, y un nombre con
+#     acento sale escapado y entre comillas. Ahi un grep de '\.dart$' ya no
+#     matchea y el archivo se saltea el hook entero. Con -z git emite el path
+#     crudo, separado por NUL.
+#   - --diff-filter=d, en minuscula, es "todo menos los borrados". La lista
+#     positiva —ACM— dejaba afuera los renombrados: un archivo movido y ademas
+#     desformateado pasaba el hook.
+#
+# Los directorios son los mismos que mira la CI: lib y test. Este package no
+# genera ningun archivo, asi que no hay exclusiones de *.g.dart ni de l10n.
+set -- 'lib/*.dart' 'test/*.dart'
+
+if git diff --cached --quiet --diff-filter=d -- "$@"; then
+  exit 0
+fi
+
+if ! git diff --cached --name-only -z --diff-filter=d -- "$@" \
+  | xargs -0 dart format --output=none --set-exit-if-changed; then
+  cat >&2 <<'MSG'
+
+Hay archivos sin formatear en el commit. Para arreglarlo:
+
+  find lib test -name '*.dart' -exec dart format {} +
+
+Despues volve a stagear y commitear. Ver AGENTS.md, seccion Formato.
+MSG
+  exit 1
+fi

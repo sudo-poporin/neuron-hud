@@ -1,0 +1,87 @@
+#!/bin/sh
+#
+# Corre formato, analyze y los tests una vez por push.
+#
+# **Adelanta a la CI, no la reemplaza.** Este repo es publico, asi que Actions
+# es gratis y el workflow corre solo en cada push y en cada PR. La version de
+# este hook que vive en el repo privado de la app existe por lo contrario: alla
+# los triggers estan apagados y el hook es lo unico que corre. Aca el valor es
+# enterarse en segundos en vez de esperar al runner, y no abrir un PR con un
+# rojo que ya sabias que estaba.
+#
+# Corre los tres pasos de chequeo del workflow y no el resto: se saltea
+# `pub get` y el --coverage con su artifact. Y mira el working tree, no el
+# commit que se pushea: puede pasar sobre un commit que un checkout limpio
+# rechazaria, y al reves.
+#
+# Por push y no por commit a proposito: en cada commit seria exactamente el
+# hook que termina salteado con --no-verify. El pre-commit de al lado se queda
+# con lo rapido.
+#
+# Activacion, una vez por clon —la misma para los dos hooks—:
+#   git config core.hooksPath .githooks
+#
+# Para saltearlo: git push --no-verify. Es la salida legitima para pushear una
+# rama WIP, que conviene hacer seguido.
+
+# Git alimenta por stdin una linea por ref, con el formato de githooks(5):
+# `<local ref> <local sha1> <remote ref> <remote sha1>`. Un local_sha en cero
+# es un borrado de rama, y cero lineas es un push que no manda nada: en ninguno
+# de los dos hay codigo nuevo que chequear.
+has_code=0
+while read -r _ local_sha _ _; do
+  case "$local_sha" in
+    '' | 0000000000000000000000000000000000000000) ;;
+    *) has_code=1 ;;
+  esac
+done
+[ "$has_code" -eq 1 ] || exit 0
+
+# Avisa y no bloquea. Pushear lo que ya esta commiteado teniendo trabajo encima
+# sin commitear es el caso normal, y rechazarlo mandaria a usar --no-verify
+# todos los dias, que es como un hook deja de existir. El aviso sale antes de
+# los chequeos, no despues, asi se puede cortar a tiempo.
+if ! git diff --quiet || ! git diff --cached --quiet ||
+  [ -n "$(git ls-files --others --exclude-standard -- lib test)" ]; then
+  cat >&2 <<'MSG'
+Aviso: hay cambios sin commitear. Lo que se chequea es el working tree, no el
+commit que se pushea, asi que esto valida algo distinto de lo que se publica.
+
+MSG
+fi
+
+output=$(mktemp) || exit 1
+trap 'rm -f "$output"' EXIT
+
+# Imprime lo que el paso escupio antes del mensaje. Tragarlo deja a un archivo
+# que no parsea —exit 65, con su diagnostico— indistinguible de uno sin
+# formatear —exit 1—, los dos bajo el mismo cartel.
+fail() {
+  cat "$output" >&2
+  cat >&2 <<MSG
+
+El push se aborto: $1
+
+  $2
+
+Cuando pase, volve a pushear. Si el push es deliberado igual, git push --no-verify.
+MSG
+  exit 1
+}
+
+# Las exclusiones son las mismas del pre-commit y las del step "Check format"
+# de la CI. Ver AGENTS.md, seccion Formato.
+#
+# `-exec ... +` y no un pipe a xargs: un `dart format` sin argumentos camina el
+# directorio entero, build/ incluido, asi que el comando no puede correr nunca
+# pelado. find -exec ni siquiera invoca al programa cuando no matchea nada, y
+# propaga el exit code, que es lo que permite que este paso falle.
+find lib test -name '*.dart' \
+  -exec dart format --output=none --set-exit-if-changed {} + >"$output" 2>&1 ||
+  fail "el formato no pasa." "find lib test -name '*.dart' -exec dart format {} +"
+
+flutter analyze >"$output" 2>&1 ||
+  fail "flutter analyze encontro problemas." "flutter analyze"
+
+flutter test >"$output" 2>&1 ||
+  fail "hay tests en rojo." "flutter test"
