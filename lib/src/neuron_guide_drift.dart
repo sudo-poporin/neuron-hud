@@ -29,9 +29,9 @@ Duration neuronGuideDriftPeriod(int seed) =>
 
 /// Mueve las guias de un lado a otro, apenas, mientras el elemento no resuelva.
 ///
-/// **El reparto es el de siempre en este sistema**: las capas de `astral/` son
+/// **El reparto es el de siempre en este sistema**: las capas son
 /// `StatelessWidget` sin reloj —derivan su layout de sus parametros y no se
-/// mueven solas—, asi que quien las mueve vive aca, del lado de hadoken.
+/// mueven solas—, asi que quien las mueve es un widget aparte, como este.
 ///
 /// **Corre la posicion y no la semilla.** Reseedear reparte las lineas en otro
 /// lado de la caja y eso lee como un salto, que es lo que el propio

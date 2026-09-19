@@ -46,7 +46,7 @@ Duration neuronCornerDriftPeriod(int seed) =>
 /// Mueve las cuatro esquinas del marco, cada una por su cuenta.
 ///
 /// **Es el cuarto reloj del esqueleto**, y sigue el mismo reparto que los otros
-/// tres: las capas de `astral/` no tienen reloj, y quien las mueve vive aca.
+/// tres: las capas no tienen reloj, y quien las mueve es un widget aparte.
 ///
 /// **Las cuatro esquinas corren desfasadas entre si.** Con la misma fase el
 /// marco entero se agranda y se achica al unisono, que lee como un latido —una
