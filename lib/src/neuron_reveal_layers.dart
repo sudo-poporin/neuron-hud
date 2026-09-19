@@ -60,7 +60,11 @@ class _NeuronRevealLayers extends StatelessWidget {
       child: content,
     );
     content = BlockNoise(
-      color: config.ink,
+      // `withValues(alpha: 1)` y no `config.ink` pelado: el dartdoc de `ink`
+      // promete que la alpha que se pasa se ignora y que cada capa aplica la
+      // suya. Las otras dos la pisan al poner la propia; esta la conservaba.
+      // Con el default no se notaba, porque su alpha ya es 1.
+      color: config.ink.withValues(alpha: 1),
       progress: frame.noise,
       seed: config.seed,
       child: content,

@@ -420,6 +420,25 @@ void main() {
       await tester.pumpWidget(_host(const SizedBox()));
     });
 
+    testWidgets('la alpha de ink se ignora en las tres capas', (tester) async {
+      // El dartdoc de `ink` lo promete en negrita: cada capa aplica la suya.
+      // Con el default no se nota, porque su alpha ya es 1.
+      await tester.pumpWidget(
+        _host(
+          NeuronReveal(
+            ink: const Color(0xFFFFFFFF).withValues(alpha: 0.5),
+            child: child,
+          ),
+        ),
+      );
+      await tester.pump();
+      await _pumpFrames(tester, 2);
+
+      expect(tester.widget<BlockNoise>(find.byType(BlockNoise)).color.a, 1.0);
+
+      await tester.pumpWidget(_host(const SizedBox()));
+    });
+
     testWidgets('onRevealStart no corre durante el build del consumidor', (
       tester,
     ) async {
