@@ -32,6 +32,7 @@ export 'src/neuron_guide_drift.dart';
 export 'src/neuron_registry.dart';
 export 'src/neuron_reveal.dart';
 export 'src/neuron_reveal_memory.dart';
+export 'src/neuron_sweep_period.dart';
 export 'src/neuron_timeline.dart';
 export 'src/noise_sweep.dart';
 export 'src/perspective.dart';
