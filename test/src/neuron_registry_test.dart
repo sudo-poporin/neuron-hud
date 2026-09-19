@@ -48,6 +48,24 @@ void main() {
       expect(neuronAlreadyRevealed(neuronRevealKey('123', 'cover')), isTrue);
     });
 
+    test('un dueño con el separador adentro no colisiona con otro', () {
+      // `a#b` + `x` y `a` + `b#x` arman la misma cadena si no se escapa nada.
+      // Son dos filas distintas y tendrían una sola entrada compartida.
+      expect(neuronRevealKey('a#b', 'x'), isNot(neuronRevealKey('a', 'b#x')));
+    });
+
+    test(
+      'olvidar un dueño no toca al que lo tiene como prefijo con separador',
+      () {
+        markNeuronRevealed(neuronRevealKey('a#b', 'cover'));
+
+        // Sin escapar, el prefijo `a#` matchea la clave de `a#b` y se la lleva.
+        forgetNeuronRevealed('a');
+
+        expect(neuronAlreadyRevealed(neuronRevealKey('a#b', 'cover')), isTrue);
+      },
+    );
+
     test('el mismo juego en dos listas son dos dueños distintos', () {
       final enBusqueda = neuronRowOwner('search', 'igdb:123');
       final enDeseados = neuronRowOwner('wishlist', 'igdb:123');

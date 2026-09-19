@@ -22,14 +22,23 @@ final _revealed = <String>{};
 
 /// Separa al dueno de la parte dentro de una clave.
 ///
-/// Las claves son `<dueno>$_partSeparator<parte>` —`123#cover`, `123#info`—
-/// porque [forgetNeuronRevealed] borra por dueno y necesita reconocer sus
-/// partes sin llevar un mapa aparte.
+/// Las claves son `<dueno>$_partSeparator<parte>` porque [forgetNeuronRevealed]
+/// borra por dueno y necesita reconocer sus partes sin llevar un mapa aparte.
 const _partSeparator = '#';
 
 /// Arma la clave de una parte de un elemento.
+///
+/// **Los dos lados van escapados, y no es decoracion.** Con el separador
+/// literal, un dueno que lo contenga arma la misma cadena que otro par
+/// distinto: `a#b` + `x` y `a` + `b#x` dan las dos `a#b#x`, o sea dos filas
+/// compartiendo una entrada. Y peor, el prefijo `a#` de [forgetNeuronRevealed]
+/// matchea la clave de `a#b`, asi que olvidar una fila se lleva la memoria de
+/// otra.
+///
+/// En la app de la que salio esto no pasaba, porque sus identidades nunca
+/// traian un `#`. Como package, quien lo use pasa lo que quiera.
 String neuronRevealKey(String owner, String part) =>
-    '$owner$_partSeparator$part';
+    '${Uri.encodeComponent(owner)}$_partSeparator${Uri.encodeComponent(part)}';
 
 /// Arma el dueno de una fila: la lista que la muestra, mas su identidad.
 ///
@@ -60,7 +69,9 @@ void markNeuronRevealed(String key) => _revealed.add(key);
 /// un revelado **sin** destruir la fila es el vuelo de un `Hero`, y ese es
 /// exactamente el rebote que hay que callar.
 void forgetNeuronRevealed(String owner) {
-  final prefix = '$owner$_partSeparator';
+  // Escapado igual que en [neuronRevealKey], o el prefijo no matchea sus
+  // propias claves.
+  final prefix = '${Uri.encodeComponent(owner)}$_partSeparator';
 
   _revealed.removeWhere((key) => key.startsWith(prefix));
 }
