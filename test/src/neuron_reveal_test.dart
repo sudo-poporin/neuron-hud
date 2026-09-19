@@ -420,6 +420,26 @@ void main() {
       await tester.pumpWidget(_host(const SizedBox()));
     });
 
+    testWidgets('onRevealStart no corre durante el build del consumidor', (
+      tester,
+    ) async {
+      // El caso natural: el consumidor anota en su estado que la fila ya se
+      // revelo. Si el aviso sale sincronico desde `didUpdateWidget`, ese
+      // `setState` cae en plena fase de build.
+      var avisos = 0;
+
+      await tester.pumpWidget(
+        _host(_ConsumidorQueSeActualiza(onReveal: () => avisos++)),
+      );
+      await tester.pump();
+      await _pumpFrames(tester, 4);
+
+      expect(tester.takeException(), isNull);
+      expect(avisos, 1);
+
+      await tester.pumpWidget(_host(const SizedBox()));
+    });
+
     testWidgets('con ready en false el burst no se consume esperando', (
       tester,
     ) async {
@@ -922,4 +942,41 @@ void main() {
       },
     );
   });
+}
+
+/// Un consumidor que hace `setState` desde `onRevealStart`, que es lo natural:
+/// anotar que la fila ya se revelo es cambiar estado.
+class _ConsumidorQueSeActualiza extends StatefulWidget {
+  const new({required this.onReveal});
+
+  final VoidCallback onReveal;
+
+  @override
+  State<_ConsumidorQueSeActualiza> createState() =>
+      _ConsumidorQueSeActualizaState();
+}
+
+class _ConsumidorQueSeActualizaState extends State<_ConsumidorQueSeActualiza> {
+  bool _listo = false;
+  bool _revelado = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // El revelado arranca por un cambio de `ready`, que es como llega el
+    // contenido en la vida real: primero el esqueleto, despues el dato.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) setState(() => _listo = true);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => NeuronReveal(
+    ready: _listo,
+    onRevealStart: () {
+      widget.onReveal();
+      setState(() => _revelado = true);
+    },
+    child: SizedBox(width: 90, height: 128, key: ValueKey(_revelado)),
+  );
 }

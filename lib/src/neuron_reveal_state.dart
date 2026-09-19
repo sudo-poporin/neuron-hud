@@ -178,11 +178,31 @@ class _NeuronRevealState extends State<NeuronReveal>
   }
 
   /// Marca el revelado como arrancado y avisa. Una sola vez.
+  ///
+  /// **El aviso sale despues del frame, la marca no.** `_apply` corre desde
+  /// `didChangeDependencies` y `didUpdateWidget`, o sea en plena fase de build:
+  /// un consumidor que haga `setState` en el callback —que es lo natural,
+  /// anotar que la fila ya se revelo es cambiar estado— se come el assert de
+  /// `setState() called during build`.
+  ///
+  /// El `_released` se pone igual y sincronico, asi que el aviso sigue siendo
+  /// uno solo por revelado aunque lleguen varios rebuilds antes de que el
+  /// callback corra.
+  ///
+  /// El retraso es de un post-frame, no de un frame entero: para un consumidor
+  /// que lleve registro de lo revelado, la marca sigue cayendo en el mismo
+  /// frame en que el revelado arranca.
   void _release() {
     if (_released) return;
 
     _released = true;
-    widget.onRevealStart?.call();
+
+    final onRevealStart = widget.onRevealStart;
+    if (onRevealStart == null) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) onRevealStart();
+    });
   }
 
   void _onStatus(AnimationStatus status) {
