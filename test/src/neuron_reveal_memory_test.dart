@@ -70,4 +70,20 @@ void main() {
       expect(neuronAlreadyRevealed(neuronRevealKey('123', 'cover')), isTrue);
     });
   });
+
+  testWidgets('acepta un owner armado en runtime, sin const', (tester) async {
+    // El caso real: el dueno de una fila sale de `neuronRowOwner`, que combina
+    // la lista con la identidad del elemento. Los demas tests pasan un literal
+    // y construyen con `const`, que se evalua en compilacion y deja el
+    // constructor sin ejercitar.
+    final owner = neuronRowOwner('busqueda', '123');
+
+    await tester.pumpWidget(
+      montar(NeuronRevealMemory(owner: owner, child: const SizedBox())),
+    );
+
+    markNeuronRevealed(neuronRevealKey(owner, 'cover'));
+
+    expect(neuronAlreadyRevealed(neuronRevealKey(owner, 'cover')), isTrue);
+  });
 }

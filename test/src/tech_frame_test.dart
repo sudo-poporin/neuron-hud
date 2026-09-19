@@ -129,4 +129,29 @@ void main() {
       expect(base.shouldRepaint(base), isFalse);
     });
   });
+
+  testWidgets('acepta los parametros calculados en runtime, sin const', (
+    tester,
+  ) async {
+    // El caso real de un consumidor: los corrimientos de las esquinas salen de
+    // un widget que los anima, asi que no hay contexto `const` en ningun lado.
+    // Los demas tests construyen con `const` y esa forma se evalua en
+    // compilacion, que deja el constructor sin ejercitar.
+    final offsets = List<Offset>.generate(4, (i) => Offset(i.toDouble(), 0));
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: TechFrame(
+          bracketLength: 8 + offsets.length.toDouble(),
+          cornerOffsets: offsets,
+          child: const SizedBox(width: 90, height: 128),
+        ),
+      ),
+    );
+
+    final frame = tester.widget<TechFrame>(find.byType(TechFrame));
+
+    expect(frame.bracketLength, 12);
+    expect(frame.cornerOffsets, hasLength(4));
+  });
 }
