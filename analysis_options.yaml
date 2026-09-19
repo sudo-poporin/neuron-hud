@@ -1,0 +1,34 @@
+include: package:very_good_analysis/analysis_options.yaml
+analyzer:
+  errors:
+    # Deprecadas en el linter, pero siguen viniendo prendidas desde
+    # very_good_analysis. Se ignoran desde acá porque nombrarlas en `linter:
+    # rules:` dispara `deprecated_lint` y falla el análisis. Y no son gratis de
+    # aplicar: sacar el `await` de un `return await` cambia que la excepción la
+    # agarre el `try` de alrededor, que es la unsoundness por la que Dart
+    # deprecó la regla.
+    unnecessary_await_in_return: ignore
+    one_member_abstracts: ignore
+    discarded_futures: ignore
+    comment_references: ignore
+    invalid_annotation_target: ignore
+  exclude:
+    # `flutter pub get` agrega las siete solo, en cada corrida, y las repone si
+    # alguien las borra. Sacarlas es pelearle a la herramienta para que las
+    # vuelva a escribir en el siguiente `pub get`, así que se quedan. Las de
+    # plataforma hoy no matchean nada; van a matchear cuando llegue `example/`
+    # con sus carpetas de Android e iOS.
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
+linter:
+  rules:
+    sort_constructors_first: true
+    sort_pub_dependencies: false
+    flutter_style_todos: false
+    lines_longer_than_80_chars: false
+    comment_references: false
