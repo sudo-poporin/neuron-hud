@@ -886,6 +886,31 @@ void main() {
       expect(tester.binding.transientCallbackCount, 0);
     });
 
+    testWidgets('una ruta inactiva termina el revelado pero lo avisa', (
+      tester,
+    ) async {
+      // Una ruta inactiva no es lo mismo que «reducir movimiento». Las dos
+      // muestran el contenido resuelto, pero «reducir movimiento» es global
+      // —una copia posterior tampoco se anima— y una ruta inactiva es de este
+      // subarbol y transitoria: si no se avisa, el consumidor nunca lo
+      // registra y la copia que arma un `Hero` al volar se revela de nuevo.
+      var avisos = 0;
+
+      await tester.pumpWidget(
+        _host(
+          TickerMode(
+            enabled: false,
+            child: NeuronReveal(onRevealStart: () => avisos++, child: child),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(avisos, 1);
+
+      await tester.pumpWidget(_host(const SizedBox()));
+    });
+
     testWidgets('en una ruta inactiva tampoco arranca', (tester) async {
       await tester.pumpWidget(
         _host(

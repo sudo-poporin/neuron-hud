@@ -31,6 +31,12 @@ class _NeuronRevealState extends State<NeuronReveal>
   /// y el revelado no arrancaria nunca.
   bool? _running;
 
+  /// Si el subarbol tiene los tickers prendidos. Una ruta tapada los apaga.
+  bool _tickerEnabled = true;
+
+  /// Si el sistema pide «reducir movimiento». Es global, no de este subarbol.
+  bool _reduceMotion = false;
+
   @override
   void initState() {
     super.initState();
@@ -88,9 +94,9 @@ class _NeuronRevealState extends State<NeuronReveal>
   void _apply({bool force = false}) {
     // TickerMode ademas del gate de reduce-motion: en una ruta inactiva Flutter
     // mutea los tickers. `TickerMode.of` esta deprecado desde Flutter 3.35.
-    final enabled =
-        TickerMode.valuesOf(context).enabled &&
-        !(MediaQuery.maybeDisableAnimationsOf(context) ?? false);
+    _tickerEnabled = TickerMode.valuesOf(context).enabled;
+    _reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+    final enabled = _tickerEnabled && !_reduceMotion;
     if (enabled == _running && !force) return;
 
     _running = enabled;
@@ -101,9 +107,25 @@ class _NeuronRevealState extends State<NeuronReveal>
     // tres terminan igual y ninguno avisa: no hubo revelado que marcar, y una
     // reconstruccion posterior tampoco lo va a correr.
     if (widget.alreadyRevealed ||
-        !enabled ||
+        _reduceMotion ||
         _timeline.total <= Duration.zero) {
       _cancelDelay();
+      _finish();
+
+      return;
+    }
+
+    // Una ruta inactiva termina igual —el contenido se muestra resuelto— pero
+    // **si avisa**, que es lo que la separa de los tres de arriba.
+    //
+    // «Reducir movimiento» es global: la copia que arma un `Hero` al volar
+    // tampoco se anima, asi que no hay nada que callar. Una ruta inactiva es de
+    // este subarbol y transitoria: sin el aviso, el consumidor nunca registra
+    // el revelado y esa copia se revela de nuevo, que es justo el rebote que el
+    // registro existe para callar.
+    if (!_tickerEnabled) {
+      _cancelDelay();
+      _release();
       _finish();
 
       return;
