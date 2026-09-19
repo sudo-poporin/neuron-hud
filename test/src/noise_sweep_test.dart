@@ -1,17 +1,36 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:neuron_hud/neuron_hud.dart';
 
-/// Canvas falso que registra los rectangulos dibujados y con que Paint.
+/// Canvas falso que registra los rectangulos dibujados, con que Paint, y los
+/// recortes que se le aplicaron.
 class _RecordingCanvas extends Fake implements Canvas {
   final List<Rect> rects = <Rect>[];
   final List<Paint> paints = <Paint>[];
+  final List<Rect> clips = <Rect>[];
+  int saves = 0;
+  int restores = 0;
 
   @override
   void drawRect(Rect rect, Paint paint) {
     rects.add(rect);
     paints.add(paint);
   }
+
+  @override
+  void save() => saves++;
+
+  @override
+  void restore() => restores++;
+
+  @override
+  void clipRect(
+    Rect rect, {
+    ui.ClipOp clipOp = ui.ClipOp.intersect,
+    bool doAntiAlias = true,
+  }) => clips.add(rect);
 }
 
 void main() {
@@ -233,6 +252,17 @@ void main() {
       for (final paint in ambientWith().paints) {
         expect(paint.maskFilter, isNotNull);
       }
+    });
+
+    test('los jirones quedan recortados a la caja', () {
+      // A diferencia de la banda y la estela, que se intersectan con la caja
+      // antes de dibujarse, un jiron puede arrancar en negativo y terminar
+      // pasado el borde. Y el blur lo estira todavia mas, asi que intersectar
+      // el Rect no alcanza: hace falta recortar el canvas.
+      final canvas = ambientWith();
+
+      expect(canvas.clips, contains(Offset.zero & size));
+      expect(canvas.saves, canvas.restores);
     });
 
     test('los jirones son de baja opacidad: es ambiente, no señal', () {

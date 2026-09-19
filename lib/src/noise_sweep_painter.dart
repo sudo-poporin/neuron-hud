@@ -147,6 +147,18 @@ class NoiseSweepPainter extends CustomPainter {
   void _paintWisps(Canvas canvas, Size size) {
     final random = math.Random(seed);
 
+    // **Recorte, y no intersectar el Rect como hace [_drawInside].** Un jiron
+    // arranca en negativo y termina pasado el borde por como se calcula su
+    // posicion, y ademas lleva un `MaskFilter.blur` que lo estira mas alla de
+    // su propio rectangulo: recortar el rect dejaria el desenfoque igual
+    // pintando encima de los vecinos. `CustomPaint` no recorta solo.
+    //
+    // Una sola vez alrededor del bucle y no por jiron: es el mismo recorte para
+    // los seis.
+    canvas
+      ..save()
+      ..clipRect(Offset.zero & size);
+
     for (var i = 0; i < wispCount; i++) {
       // Cada jiron tiene su fase, su velocidad, su travesia, su largo y su
       // opacidad: sin eso los seis derivan en bloque y se lee como una sola
@@ -187,6 +199,8 @@ class NoiseSweepPainter extends CustomPainter {
           ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3),
       );
     }
+
+    canvas.restore();
   }
 
   @override
