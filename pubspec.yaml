@@ -1,6 +1,6 @@
 name: neuron_hud
 description: "Sistema de carga y revelado por capas para Flutter, con el lenguaje visual de un HUD holográfico."
-version: 1.0.0
+version: 0.1.0
 repository: https://github.com/sudo-poporin/neuron-hud
 
 environment:
