@@ -49,7 +49,12 @@ String neuronRevealKey(String owner, String part) =>
 /// tendria un solo dueno: la fila de la busqueda lo veria ya revelado y
 /// aparecereria resuelta sin revelar nada, y al cerrar el cajon su `dispose`
 /// borraria la memoria de la fila de deseados, que nunca se fue del arbol.
-String neuronRowOwner(String list, String identity) => '$list:$identity';
+///
+/// **Los dos lados van escapados, por lo mismo que en [neuronRevealKey]:** sin
+/// eso, `('a:b', 'c')` y `('a', 'b:c')` arman el mismo dueño, y dos filas
+/// distintas comparten —y se borran— la memoria.
+String neuronRowOwner(String list, String identity) =>
+    '${Uri.encodeComponent(list)}:${Uri.encodeComponent(identity)}';
 
 /// Si [key] ya se revelo y su dueno sigue montado.
 bool neuronAlreadyRevealed(String key) => _revealed.contains(key);

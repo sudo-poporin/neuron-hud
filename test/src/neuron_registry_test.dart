@@ -66,6 +66,12 @@ void main() {
       },
     );
 
+    test('una lista con el separador adentro no colisiona con otra', () {
+      // Mismo defecto que las claves, un nivel mas arriba: ('a:b','c') y
+      // ('a','b:c') arman el mismo dueño si no se escapa nada.
+      expect(neuronRowOwner('a:b', 'c'), isNot(neuronRowOwner('a', 'b:c')));
+    });
+
     test('el mismo juego en dos listas son dos dueños distintos', () {
       final enBusqueda = neuronRowOwner('search', 'igdb:123');
       final enDeseados = neuronRowOwner('wishlist', 'igdb:123');
