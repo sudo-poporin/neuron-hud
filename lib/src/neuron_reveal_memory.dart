@@ -51,5 +51,10 @@ class _NeuronRevealMemoryState extends State<NeuronRevealMemory> {
   }
 
   @override
-  Widget build(BuildContext context) => widget.child;
+  Widget build(BuildContext context) =>
+      // **La `key` es lo que hace que un dueño nuevo remonte al hijo.** Limpiar
+      // el registro no alcanza: el `Element` del hijo es el mismo, y un
+      // `NeuronReveal` que ya terminó conserva su estado, así que la fila nueva
+      // aparecería resuelta sin revelarse.
+      KeyedSubtree(key: ValueKey(widget.owner), child: widget.child);
 }

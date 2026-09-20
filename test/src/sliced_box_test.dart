@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:neuron_hud/neuron_hud.dart';
+import 'package:neuron_hud/src/sliced_box.dart';
 
 /// Canvas falso que registra las lineas dibujadas.
 class _RecordingCanvas extends Fake implements Canvas {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:neuron_hud/neuron_hud.dart';
+import 'package:neuron_hud/src/chromatic_burst.dart';
+import 'package:neuron_hud/src/neuron_reveal.dart';
 
 /// Monta [child] adentro de un `MediaQuery`, que es lo que el gate de
 /// reduce-motion consulta.
@@ -435,6 +437,22 @@ void main() {
       await _pumpFrames(tester, 2);
 
       expect(tester.widget<BlockNoise>(find.byType(BlockNoise)).color.a, 1.0);
+
+      await tester.pumpWidget(_host(const SizedBox()));
+    });
+
+    testWidgets('el consumidor puede devolver alreadyRevealed sin cortar', (
+      tester,
+    ) async {
+      // El ciclo natural: el consumidor persiste la marca cuando le avisan, y
+      // en el rebuild siguiente la devuelve como prop. Si esa salida corta no
+      // distingue «ya venia revelado» de «lo acabo de arrancar yo», mata la
+      // secuencia en pleno vuelo y el contenido salta a resuelto.
+      await tester.pumpWidget(_host(const _ConsumidorQuePersiste()));
+      await tester.pump();
+      await _pumpFrames(tester, 4);
+
+      expect(_contentOpacity(tester), 0);
 
       await tester.pumpWidget(_host(const SizedBox()));
     });
@@ -1022,5 +1040,24 @@ class _ConsumidorQueSeActualizaState extends State<_ConsumidorQueSeActualiza> {
       setState(() => _revelado = true);
     },
     child: SizedBox(width: 90, height: 128, key: ValueKey(_revelado)),
+  );
+}
+
+/// Consumidor que persiste la marca y la devuelve como `alreadyRevealed`.
+class _ConsumidorQuePersiste extends StatefulWidget {
+  const new();
+
+  @override
+  State<_ConsumidorQuePersiste> createState() => _ConsumidorQuePersisteState();
+}
+
+class _ConsumidorQuePersisteState extends State<_ConsumidorQuePersiste> {
+  bool _revelado = false;
+
+  @override
+  Widget build(BuildContext context) => NeuronReveal(
+    alreadyRevealed: _revelado,
+    onRevealStart: () => setState(() => _revelado = true),
+    child: const Text('portada', textDirection: TextDirection.ltr),
   );
 }

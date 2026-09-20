@@ -21,22 +21,33 @@
 /// están cubiertas por sus tests.
 library;
 
+// **Los render objects no se exportan.** Son el como y no el que: un consumidor
+// que los toque queda atado a una decision interna, y sacarlos despues seria un
+// cambio mayor de version. Los tests de este package los alcanzan importando su
+// libreria de `src/` directamente.
+//
+// `resetNeuronRegistry` **si** se exporta, aunque lleve `@visibleForTesting`.
+// No es un detalle interno: el registro es estado de libreria, y un consumidor
+// que monte estos widgets en sus tests necesita vaciarlo entre uno y otro desde
+// su propio `flutter_test_config.dart`. Sin el, sus suites fallan por orden de
+// ejecucion.
+
 export 'src/astral_defaults.dart';
 export 'src/block_noise.dart';
-export 'src/chromatic_burst.dart';
+export 'src/chromatic_burst.dart' hide RenderChromaticBurst;
 export 'src/dot_matrix.dart';
 export 'src/expand_line.dart';
 export 'src/guide_lines.dart';
 export 'src/neuron_corner_drift.dart';
 export 'src/neuron_guide_drift.dart';
 export 'src/neuron_registry.dart';
-export 'src/neuron_reveal.dart';
+export 'src/neuron_reveal.dart' hide RenderContentOpacity;
 export 'src/neuron_reveal_memory.dart';
 export 'src/neuron_sweep_period.dart';
 export 'src/neuron_timeline.dart';
 export 'src/noise_sweep.dart';
-export 'src/perspective.dart';
-export 'src/sliced_box.dart';
+export 'src/perspective.dart' hide RenderShadowedPart;
+export 'src/sliced_box.dart' hide RenderSlicedBox;
 export 'src/stagger.dart';
 export 'src/tech_frame.dart';
 export 'src/terminal_cursor.dart';

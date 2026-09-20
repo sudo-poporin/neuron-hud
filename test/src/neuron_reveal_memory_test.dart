@@ -86,4 +86,34 @@ void main() {
 
     expect(neuronAlreadyRevealed(neuronRevealKey(owner, 'cover')), isTrue);
   });
+
+  testWidgets('reciclada para otro dueño, el hijo se revela de nuevo', (
+    tester,
+  ) async {
+    // El `didUpdateWidget` limpia el registro del dueño viejo, pero el
+    // `Element` del hijo es el mismo: un `NeuronReveal` que ya termino conserva
+    // su estado y el item nuevo aparece resuelto sin revelarse.
+    Widget conDueno(String owner) => montar(
+      NeuronRevealMemory(
+        owner: owner,
+        child: const NeuronReveal(
+          child: Text('portada', textDirection: TextDirection.ltr),
+        ),
+      ),
+    );
+
+    await tester.pumpWidget(conDueno('a'));
+    await tester.pumpAndSettle();
+
+    // Terminado: sin capas.
+    expect(find.byType(GuideLines), findsNothing);
+
+    await tester.pumpWidget(conDueno('b'));
+    await tester.pump();
+
+    // Otra fila: tiene que arrancar su propio revelado.
+    expect(find.byType(GuideLines), findsOneWidget);
+
+    await tester.pumpWidget(montar(const SizedBox()));
+  });
 }

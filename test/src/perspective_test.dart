@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:neuron_hud/neuron_hud.dart';
+import 'package:neuron_hud/src/perspective.dart';
 
 /// Parte de prueba, para contarla en el arbol sin ambiguedad.
 class _Part extends StatelessWidget {

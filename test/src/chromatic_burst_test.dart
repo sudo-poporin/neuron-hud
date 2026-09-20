@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:neuron_hud/neuron_hud.dart';
+import 'package:neuron_hud/src/chromatic_burst.dart';
 
 /// Hijo de prueba, para contar sus copias en el arbol sin ambiguedad.
 class _Marker extends StatelessWidget {

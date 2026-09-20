@@ -106,7 +106,12 @@ class _NeuronRevealState extends State<NeuronReveal>
     // Ya revelado, sin movimiento, o una lista de fases que no dura nada. Los
     // tres terminan igual y ninguno avisa: no hubo revelado que marcar, y una
     // reconstruccion posterior tampoco lo va a correr.
-    if (widget.alreadyRevealed ||
+    // **`alreadyRevealed` sólo corta si llega antes de arrancar.** El ciclo
+    // natural de un consumidor es persistir la marca cuando le avisan y
+    // devolverla como prop en el rebuild siguiente; sin el `!_released`, ese
+    // rebuild mata la secuencia que el aviso acababa de anunciar y el contenido
+    // salta a resuelto a mitad de camino.
+    if ((widget.alreadyRevealed && !_released) ||
         _reduceMotion ||
         _timeline.total <= Duration.zero) {
       _cancelDelay();
