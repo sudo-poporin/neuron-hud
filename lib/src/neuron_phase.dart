@@ -32,8 +32,8 @@ enum NeuronPhase {
 
 /// Cuanto dura cada fase cuando no se la sobreescribe.
 ///
-/// Las siete suman 830 ms; el revelado de texto, que va sin [NeuronPhase.slice],
-/// suma 740.
+/// Las siete suman 850 ms; el revelado de texto, que va sin [NeuronPhase.slice],
+/// suma 760.
 const neuronPhaseDurations = <NeuronPhase, Duration>{
   NeuronPhase.guides: Duration(milliseconds: 120),
   NeuronPhase.dots: Duration(milliseconds: 100),

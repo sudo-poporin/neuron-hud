@@ -98,7 +98,8 @@ class SkeletonBox extends StatelessWidget {
       color: structure,
       bandWidth: 0.05,
       trail: 0.55,
-      wispCount: 2,
+      // Sin `wispCount`: sólo lo mira `NoiseSweepMode.ambient`, y esto corre en
+      // `progress`, que se mide con `bandWidth`.
       period: neuronSweepPeriod(seed),
       seed: seed,
       child: NeuronGuideDrift(

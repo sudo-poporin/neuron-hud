@@ -22,7 +22,7 @@ const textPhases = <NeuronPhase>[
 
 /// Cada cuánto vuelve a correr el revelado.
 ///
-/// Las siete fases suman 830 ms y las seis del texto 740, así que el período
+/// Las siete fases suman 850 ms y las seis del texto 760, así que el período
 /// tiene que ser más largo o el revelado se corta a sí mismo: se mide del
 /// arranque de un ciclo al del siguiente, no acumulado.
 const _replayPeriod = Duration(milliseconds: 2200);

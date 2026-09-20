@@ -40,9 +40,12 @@ class OffsetScreen extends StatelessWidget {
         DemoSection(
           title: 'UNA SOLA PARTE',
           caption:
-              'Con un solo hijo no hay desfase que acumular, así que el '
-              'modificador no hace nada. Está acá porque es el caso que '
-              'confunde: no es que falle, es que no hay partes que separar.',
+              'Con un solo hijo no hay desfase que acumular: la parte 0 se '
+              'corre `stepOffset * 0`, o sea nada. **La sombra sí se pinta**, '
+              'porque cada parte la lleva por su cuenta y no depende de cuántas '
+              'haya. Está acá porque es el caso que confunde: no es que el '
+              'modificador no haga nada, es que lo único que hace con una sola '
+              'parte es la sombra.',
           child: _Badge(parts: 1),
         ),
       ],

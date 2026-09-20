@@ -13,7 +13,7 @@ flutter run
 | --- | --- | --- |
 | Ausente | Contenido que todavia no resolvio | Las cuatro capas apiladas, movidas por relojes externos |
 | Revelado | La entrada, que tiene principio y fin | `NeuronReveal`, con `slice` sobre una figura y sin `slice` sobre un texto |
-| Ocupado | Algo esta pasando ahora | `NoiseSweep` sobre un icono y `TerminalCursor` al final de un texto |
+| Ocupado | Algo esta pasando ahora | `NoiseSweep` en sus dos modos, `TerminalCursor`, `ChromaticBurst` y `SlicedBox` |
 | Stagger | El escalonado entre hermanos | `Stagger` sobre una lista, con los tres ordenes |
 | Desfase | El modificador | `Perspective`, que corre las partes de un elemento unas respecto de otras |
 

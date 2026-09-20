@@ -64,7 +64,13 @@ class _HomeState extends State<_Home> {
       // de los otros tres tienen reloj propio, así que mantenerlos montados
       // dejaría timers corriendo detrás de lo que se está mirando. Aislado
       // quiere decir aislado.
-      body: SafeArea(child: SingleChildScrollView(child: tab.screen)),
+      // La `key` por tab no es decoración: sin ella el `SingleChildScrollView`
+      // ocupa siempre la misma posición del árbol, así que Flutter reusa su
+      // elemento y su `ScrollPosition` entre tabs. Bajar uno y cambiar al
+      // siguiente lo abría scrolleado, con el primer título fuera de pantalla.
+      body: SafeArea(
+        child: SingleChildScrollView(key: ValueKey(_index), child: tab.screen),
+      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,
         onDestinationSelected: (index) => setState(() => _index = index),

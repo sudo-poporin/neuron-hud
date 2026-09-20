@@ -42,7 +42,7 @@ done
 # todos los dias, que es como un hook deja de existir. El aviso sale antes de
 # los chequeos, no despues, asi se puede cortar a tiempo.
 if ! git diff --quiet || ! git diff --cached --quiet ||
-  [ -n "$(git ls-files --others --exclude-standard -- lib test)" ]; then
+  [ -n "$(git ls-files --others --exclude-standard -- lib test example/lib)" ]; then
   cat >&2 <<'MSG'
 Aviso: hay cambios sin commitear. Lo que se chequea es el working tree, no el
 commit que se pushea, asi que esto valida algo distinto de lo que se publica.
