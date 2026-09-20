@@ -6,6 +6,50 @@ aberración cromática y bandas desplazadas.
 
 Sin dependencias de terceros: sólo `flutter`.
 
+## En movimiento
+
+Las cinco capturas salen del ejemplo de [`example/`](example), que es la misma
+app que levanta `flutter run`. Son GIFs y no fotos: lo que hay que ver es el
+**orden y el ritmo**, y una imagen fija de un campo de ruido es un cuadro de
+ruido.
+
+### Ausente — contenido que todavía no resolvió
+
+![Caja esqueleto: cuatro capas apiladas, con las guías derivando, el marco moviendo sus esquinas y un barrido atravesándola](assets/absent.gif)
+
+Las capas apiladas y tres relojes externos que las mueven, cada uno a su escala:
+el ruido varias veces por segundo, el barrido cada tres, las guías cada cuatro.
+No termina nunca.
+
+### Entrada — un revelado, que empieza y termina
+
+![Revelado completo sobre una figura: guías, puntos, ruido, condensación, pico cromático y bandas desplazadas](assets/reveal-with-slice.gif)
+
+Las siete fases en orden sobre una figura. Después del pico de aberración llegan
+las bandas horizontales corridas, que son la estabilización.
+
+![Revelado de un texto, sin la fase de bandas desplazadas](assets/reveal-text.gif)
+
+El mismo revelado **sin `slice`** sobre un texto. El slicing es adorno de
+estabilización y viene *después* de que el contenido ya se leyó: encima de un
+mensaje lo vuelve ilegible justo mientras alguien lo está leyendo.
+
+### En curso — algo está pasando ahora
+
+![Barrido continuo con estela atravesando un ícono](assets/busy-sweep.gif)
+
+Una pieza de ritmo sola, sin orquestador. Lo que comunica «esto está pasando» es
+que sea **continuo**: una ráfaga cada tres segundos comunica inestabilidad, no
+progreso.
+
+### Escalonado — los hermanos no entran juntos
+
+![Seis filas abriéndose una tras otra desde una línea](assets/stagger.gif)
+
+`Stagger` publica el retraso y `ExpandLine` lo lee. Cada fila espera su turno y
+después se abre desde una línea: primero la línea, una pausa, y recién ahí el
+alto.
+
 ## Instalación
 
 Se consume por tag de git.
@@ -56,9 +100,9 @@ Las siete fases, en orden, con su duración por defecto:
 | `slice` | Las bandas horizontales desplazadas. Posterior al pico, no simultáneo | 90 ms |
 | `settle` | La estabilización | 120 ms |
 
-Las siete suman 830 ms. `phases` dice **cuáles** corren, no en qué orden: el
+Las siete suman 850 ms. `phases` dice **cuáles** corren, no en qué orden: el
 orden es siempre el de `NeuronPhase.values`. Un revelado de texto sin `slice`
-suma 740 ms. Con la lista vacía se pinta el hijo pelado.
+suma 760 ms. Con la lista vacía se pinta el hijo pelado.
 
 `durations` sobreescribe una fase o varias sin tocar el resto.
 

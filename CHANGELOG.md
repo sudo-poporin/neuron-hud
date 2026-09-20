@@ -15,6 +15,14 @@ el versionado sigue [Semantic Versioning](https://semver.org/lang/es/).
 - Los cuatro archivos de código que pasaban las 200 líneas quedaron debajo, con
   el corte hecho en `part`s. No cambia nada de lo que el barrel exporta ni de
   cómo se comporta ninguna pieza.
+- El README muestra los tres roles y el escalonado en movimiento, con cinco GIFs
+  sacados del ejemplo. Las capturas viven en `assets/` y no se declaran como
+  assets de Flutter: viajan en el repositorio, no en la aplicación de quien
+  consume el package.
+- La lista del ejemplo que muestra el escalonado tiene ahora su alto reservado.
+  Mientras las filas se abrían, la columna medía casi nada y lo que estaba
+  debajo se trepaba hasta arriba: leía como que la página saltaba y no como
+  escalonado.
 
 ## [1.0.0] - 2026-09-19
 
