@@ -19,6 +19,10 @@ el versionado sigue [Semantic Versioning](https://semver.org/lang/es/).
   sacados del ejemplo. Las capturas viven en `assets/` y no se declaran como
   assets de Flutter: viajan en el repositorio, no en la aplicación de quien
   consume el package.
+- El README se puso a tono con los otros packages de la familia: título con
+  insignias de estado, lista de características, y una sección de referencias
+  que enlaza las dos notas del blog de PlatinumGames de las que sale el lenguaje
+  visual, con qué pieza salió de qué video.
 - La lista del ejemplo que muestra el escalonado tiene ahora su alto reservado.
   Mientras las filas se abrían, la columna medía casi nada y lo que estaba
   debajo se trepaba hasta arriba: leía como que la página saltaba y no como
