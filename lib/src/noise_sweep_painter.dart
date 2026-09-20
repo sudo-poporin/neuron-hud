@@ -175,7 +175,18 @@ class NoiseSweepPainter extends CustomPainter {
       final alpha = 0.03 + random.nextDouble() * 0.05;
 
       final travelled = (phase + t * laps) % 1;
-      final along = _forward ? travelled : 1 - travelled;
+      // **La travesia se extiende medio largo a cada lado de la caja.** El
+      // rectangulo se centra en `along` y mide `lengthFactor`, asi que con el
+      // recorrido en 0..1 el jiron todavia esta medio adentro cuando el `% 1`
+      // lo manda al otro extremo: salta de medio visible a la derecha a medio
+      // visible a la izquierda, de un frame al otro.
+      //
+      // Mapeando a `-lengthFactor/2 .. 1 + lengthFactor/2`, entra desde afuera
+      // y sale del todo antes de wrapear. Es otra continuidad que la del borde
+      // del ciclo, que ya la dan las vueltas enteras: aquella es entre t=1 y
+      // t=0, esta es a mitad de vuelta.
+      final extended = -lengthFactor / 2 + travelled * (1 + lengthFactor);
+      final along = _forward ? extended : 1 - extended;
 
       final rect = _horizontal
           ? Rect.fromLTWH(

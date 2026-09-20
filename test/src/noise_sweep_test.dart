@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -251,6 +252,47 @@ void main() {
     test('los jirones son difusos, no rectangulos duros', () {
       for (final paint in ambientWith().paints) {
         expect(paint.maskFilter, isNotNull);
+      }
+    });
+
+    test('un jiron no salta de un borde al otro estando visible', () {
+      // El wrap del ciclo ya estaba resuelto —vueltas enteras, asi que t=1 y
+      // t=0 dan la misma posicion—, pero eso es la continuidad entre vueltas.
+      // A mitad de vuelta el `% 1` tambien wrapea, y ahi el rectangulo estaba
+      // medio adentro: saltaba de medio visible a la derecha a medio visible a
+      // la izquierda, de un frame al otro.
+      //
+      // El salto de posicion sigue existiendo y tiene que existir: el jiron se
+      // teletransporta. Lo que no puede pasar es que se teletransporte
+      // **mientras se lo ve**.
+      const pasos = 60;
+      final caja = Offset.zero & size;
+      Rect primero(double t) => ambientWith(t: t, wispCount: 1).rects.first;
+
+      var previo = primero(0);
+      for (var i = 1; i <= pasos; i++) {
+        final actual = primero(i / pasos);
+        final salto = (actual.left - previo.left).abs();
+
+        if (salto > size.width / 2) {
+          // No se exige intersección vacía: el muestreo es discreto, así que
+          // las dos muestras caen un paso antes y un paso después del wrap
+          // exacto y dejan una astilla de unos pocos píxeles. Lo que el
+          // arreglo tiene que garantizar es que sea eso y no medio jirón:
+          // sin él quedaban unos 16 px de un lado y 15 del otro, con él
+          // quedan 2 y 0,1.
+          final visiblePrevio = previo.intersect(caja).width;
+          final visibleActual = actual.intersect(caja).width;
+          final tolerancia = size.width / 20;
+
+          expect(
+            math.max(visiblePrevio, visibleActual),
+            lessThan(tolerancia),
+            reason: 'saltó de $previo a $actual con medio jirón a la vista',
+          );
+        }
+
+        previo = actual;
       }
     });
 
