@@ -5,37 +5,6 @@ Todos los cambios notables de este proyecto se documentan en este archivo.
 El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y
 el versionado sigue [Semantic Versioning](https://semver.org/lang/es/).
 
-## [No publicado]
-
-### Corregido
-
-- Tres de los enlaces a las notas del blog de PlatinumGames que documentan cada
-  pieza apuntaban a la nota equivocada: `hud_inanimation.mp4` está en la segunda
-  y no en la primera, y `menu_open.mp4` y los dos videos del estudio de ángulo
-  están en la primera y no en la segunda. Se verificó contra el embebido de cada
-  artículo.
-
-### Interno
-
-- App de ejemplo en `example/`: cinco tabs que cubren las cinco familias —los
-  tres roles, el escalonado y el modificador—, cada efecto aislado y en bucle.
-  No cambia nada de lo que el barrel exporta.
-- Los cuatro archivos de código que pasaban las 200 líneas quedaron debajo, con
-  el corte hecho en `part`s. No cambia nada de lo que el barrel exporta ni de
-  cómo se comporta ninguna pieza.
-- El README muestra los tres roles y el escalonado en movimiento, con cinco GIFs
-  sacados del ejemplo. Las capturas viven en `assets/` y no se declaran como
-  assets de Flutter: viajan en el repositorio, no en la aplicación de quien
-  consume el package.
-- El README se puso a tono con los otros packages de la familia: título con
-  insignias de estado, lista de características, y una sección de referencias
-  que enlaza las dos notas del blog de PlatinumGames de las que sale el lenguaje
-  visual, con qué pieza salió de qué video.
-- La lista del ejemplo que muestra el escalonado tiene ahora su alto reservado.
-  Mientras las filas se abrían, la columna medía casi nada y lo que estaba
-  debajo se trepaba hasta arriba: leía como que la página saltaba y no como
-  escalonado.
-
 ## [1.0.0] - 2026-09-19
 
 Primera versión publicable. `lib/neuron_hud.dart` es el único punto de entrada y
@@ -84,9 +53,25 @@ lo que exporta es, desde acá, superficie pública sujeta a semver.
   invariante del sistema —las guías más lentas que el barrido, el barrido más
   lento que el ruido— se daba vuelta en una de cada veinticuatro semillas. El
   desfase por semilla de los dos queda igual.
+- Tres de los enlaces a las notas del blog de PlatinumGames que documentan cada
+  pieza apuntaban a la nota equivocada: `hud_inanimation.mp4` está en la segunda
+  y no en la primera, y `menu_open.mp4` y los dos videos del estudio de ángulo
+  están en la primera y no en la segunda. Se verificó contra el embebido de cada
+  artículo.
 
 ### Interno
 
 - Los render objects `RenderChromaticBurst`, `RenderContentOpacity`,
   `RenderShadowedPart` y `RenderSlicedBox` **no** se exportan: son el cómo y no
   el qué, y sacarlos más adelante sería un cambio mayor de versión.
+- App de ejemplo en `example/`: cinco tabs que cubren las cinco familias —los
+  tres roles, el escalonado y el modificador—, cada efecto aislado y en bucle.
+- Los cuatro archivos de código que pasaban las 200 líneas quedaron debajo, con
+  el corte hecho en `part`s. No cambia el comportamiento de ninguna pieza.
+- El README muestra los tres roles y el escalonado en movimiento, con cinco GIFs
+  sacados del ejemplo. Las capturas viven en `assets/` y no se declaran como
+  assets de Flutter: viajan en el repositorio, no en la aplicación de quien
+  consume el package.
+- El README lleva título con insignias de estado, lista de características, y
+  una sección de referencias que enlaza las dos notas del blog de PlatinumGames
+  de las que sale el lenguaje visual, con qué pieza salió de qué video.
