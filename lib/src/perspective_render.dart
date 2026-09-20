@@ -9,14 +9,31 @@ part of 'perspective.dart';
 class RenderShadowedPart extends RenderProxyBox {
   /// Pinta la parte dos veces sin reinsertarla en el arbol.
   new({
+    required this._enabled,
     required this._shadowOffset,
     required this._opacity,
     required this._blur,
   });
 
+  bool _enabled;
   Offset _shadowOffset;
   double _opacity;
   double _blur;
+
+  /// Si la pasada de sombra corre.
+  ///
+  /// **Es un flag y no un widget que se saca del arbol.** Alternar entre
+  /// envolver a la parte y pasarla pelada le cambia el ancestro inmediato, y
+  /// Flutter reconcilia por posicion y tipo: desmonta el subarbol y una parte
+  /// con estado lo pierde.
+  bool get enabled => _enabled;
+
+  set enabled(bool value) {
+    if (value == _enabled) return;
+
+    _enabled = value;
+    markNeedsPaint();
+  }
 
   /// Cuanto se corre la sombra respecto de su parte.
   Offset get shadowOffset => _shadowOffset;
@@ -53,6 +70,12 @@ class RenderShadowedPart extends RenderProxyBox {
     // Sin guarda de `child == null`: la parte es `required` y no anulable, asi
     // que la rama seria inalcanzable y romperia el 100 % de cobertura.
     final child = this.child!;
+
+    if (!_enabled) {
+      context.paintChild(child, offset);
+
+      return;
+    }
 
     // Misma guarda que los dos efectos de rafaga, y por lo mismo: repintar un
     // subarbol que retiene un handle de capa la muda en vez de duplicarla,

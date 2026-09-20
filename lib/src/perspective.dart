@@ -85,14 +85,17 @@ class Perspective extends StatelessWidget {
         for (var i = 0; i < children.length; i++)
           Transform.translate(
             offset: stepOffset * i.toDouble(),
-            child: shadow
-                ? _ShadowedPart(
-                    shadowOffset: stepOffset,
-                    opacity: shadowOpacity,
-                    blur: shadowBlur,
-                    child: children[i],
-                  )
-                : children[i],
+            // `_ShadowedPart` se queda siempre y la sombra se prende con un
+            // flag. Alternar entre envolver a la parte y pasarla pelada le
+            // cambiaba el ancestro inmediato, y Flutter reconcilia por posicion
+            // y tipo: desmontaba el subarbol y una parte con estado lo perdia.
+            child: _ShadowedPart(
+              enabled: shadow,
+              shadowOffset: stepOffset,
+              opacity: shadowOpacity,
+              blur: shadowBlur,
+              child: children[i],
+            ),
           ),
       ],
     );
@@ -102,12 +105,14 @@ class Perspective extends StatelessWidget {
 /// Una parte con su sombra debajo: la misma parte, negra y difuminada.
 class _ShadowedPart extends SingleChildRenderObjectWidget {
   const new({
+    required this.enabled,
     required this.shadowOffset,
     required this.opacity,
     required this.blur,
     required super.child,
   });
 
+  final bool enabled;
   final Offset shadowOffset;
   final double opacity;
   final double blur;
@@ -115,6 +120,7 @@ class _ShadowedPart extends SingleChildRenderObjectWidget {
   @override
   RenderShadowedPart createRenderObject(BuildContext context) =>
       RenderShadowedPart(
+        enabled: enabled,
         shadowOffset: shadowOffset,
         opacity: opacity,
         blur: blur,
@@ -126,6 +132,7 @@ class _ShadowedPart extends SingleChildRenderObjectWidget {
     RenderShadowedPart renderObject,
   ) {
     renderObject
+      ..enabled = enabled
       ..shadowOffset = shadowOffset
       ..opacity = opacity
       ..blur = blur;

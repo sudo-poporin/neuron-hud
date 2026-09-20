@@ -79,7 +79,18 @@ void main() {
       );
 
       expect(find.byType(_Part), findsNWidgets(2));
-      expect(tester.allRenderObjects.whereType<RenderShadowedPart>(), isEmpty);
+
+      // **Siguen montados, apagados.** Es el precio de que togglear la sombra
+      // no remonte a las partes: sacarlos del arbol les cambiaria el ancestro
+      // inmediato, y Flutter desmonta el subarbol cuando cambia el tipo en esa
+      // posicion. Un render object que no pinta no cuesta nada; una parte con
+      // estado que se remonta, si.
+      final apagados = tester.allRenderObjects
+          .whereType<RenderShadowedPart>()
+          .toList();
+
+      expect(apagados, hasLength(2));
+      expect(apagados.every((render) => !render.enabled), isTrue);
     });
 
     testWidgets('una parte puede llevar un GlobalKey con shadow prendida', (
@@ -288,4 +299,52 @@ void main() {
       }
     });
   });
+
+  testWidgets('togglear la sombra no remonta a los hijos', (tester) async {
+    // `shadow` alternaba entre envolver al hijo en `_ShadowedPart` y pasarlo
+    // pelado, o sea que cambiaba el ancestro inmediato de cada hijo. Flutter
+    // reconcilia por posicion y tipo: con el tipo cambiado desmonta y vuelve a
+    // crear el subarbol, y un hijo con estado lo pierde.
+    var montajes = 0;
+
+    Widget conSombra({required bool shadow}) => MaterialApp(
+      home: Perspective(
+        shadow: shadow,
+        children: [_ConEstado(onMount: () => montajes++)],
+      ),
+    );
+
+    await tester.pumpWidget(conSombra(shadow: true));
+
+    expect(montajes, 1);
+
+    await tester.pumpWidget(conSombra(shadow: false));
+
+    expect(montajes, 1);
+
+    await tester.pumpWidget(conSombra(shadow: true));
+
+    expect(montajes, 1);
+  });
+}
+
+/// Hijo con estado que cuenta cuantas veces lo montaron.
+class _ConEstado extends StatefulWidget {
+  const new({required this.onMount});
+
+  final VoidCallback onMount;
+
+  @override
+  State<_ConEstado> createState() => _ConEstadoState();
+}
+
+class _ConEstadoState extends State<_ConEstado> {
+  @override
+  void initState() {
+    super.initState();
+    widget.onMount();
+  }
+
+  @override
+  Widget build(BuildContext context) => const SizedBox(width: 40, height: 20);
 }
