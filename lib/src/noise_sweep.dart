@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/widgets.dart';
 import 'package:neuron_hud/src/astral_defaults.dart';
 
+part 'noise_sweep_modes.dart';
 part 'noise_sweep_painter.dart';
 part 'noise_sweep_state.dart';
 

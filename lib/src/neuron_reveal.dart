@@ -14,6 +14,7 @@ import 'package:neuron_hud/src/stagger.dart';
 
 part 'neuron_reveal_layers.dart';
 part 'neuron_reveal_render.dart';
+part 'neuron_reveal_run.dart';
 part 'neuron_reveal_state.dart';
 
 /// Corre la secuencia de revelado del HUD sobre su hijo.
