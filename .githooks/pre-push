@@ -76,9 +76,13 @@ MSG
 # directorio entero, build/ incluido, asi que el comando no puede correr nunca
 # pelado. find -exec ni siquiera invoca al programa cuando no matchea nada, y
 # propaga el exit code, que es lo que permite que este paso falle.
-find lib test -name '*.dart' \
+#
+# Del ejemplo se mira example/lib y no example entero: su .dart_tool puede tener
+# un dart_plugin_registrant.dart generado, y el formato de un archivo generado
+# es de su generador.
+find lib test example/lib -name '*.dart' \
   -exec dart format --output=none --set-exit-if-changed {} + >"$output" 2>&1 ||
-  fail "el formato no pasa." "find lib test -name '*.dart' -exec dart format {} +"
+  fail "el formato no pasa." "find lib test example/lib -name '*.dart' -exec dart format {} +"
 
 flutter analyze >"$output" 2>&1 ||
   fail "flutter analyze encontro problemas." "flutter analyze"

@@ -27,9 +27,14 @@ set -e
 #     positiva —ACM— dejaba afuera los renombrados: un archivo movido y ademas
 #     desformateado pasaba el hook.
 #
-# Los directorios son los mismos que mira la CI: lib y test. Este package no
-# genera ningun archivo, asi que no hay exclusiones de *.g.dart ni de l10n.
-set -- 'lib/*.dart' 'test/*.dart'
+# Los directorios son los mismos que mira la CI: lib, test y example/lib. Este
+# package no genera ningun archivo, asi que no hay exclusiones de *.g.dart ni de
+# l10n.
+#
+# Del ejemplo se mira example/lib y no example entero: su .dart_tool puede tener
+# un dart_plugin_registrant.dart generado, y el formato de un archivo generado es
+# de su generador.
+set -- 'lib/*.dart' 'test/*.dart' 'example/lib/*.dart'
 
 if git diff --cached --quiet --diff-filter=d -- "$@"; then
   exit 0
@@ -65,7 +70,7 @@ if ! find "$tmpdir" -name '*.dart' \
 
 Hay archivos sin formatear en el commit. Para arreglarlo:
 
-  find lib test -name '*.dart' -exec dart format {} +
+  find lib test example/lib -name '*.dart' -exec dart format {} +
 
 Despues volve a stagear y commitear. Ver AGENTS.md, seccion Formato.
 MSG
