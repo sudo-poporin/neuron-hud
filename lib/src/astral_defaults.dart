@@ -2,9 +2,8 @@ import 'package:flutter/widgets.dart';
 
 /// Blanco pleno de las capas: los corchetes del marco y las barras de ruido.
 ///
-/// No es un color de marca y no sale del `ColorScheme` de nadie: esta carpeta
-/// esta pensada para salir a un package propio, y un package no puede leer el
-/// tema de su consumidor. Quien la use pasa el color que quiera.
+/// No es un color de marca y no sale del `ColorScheme` de nadie: un package no
+/// puede leer el tema de su consumidor. Quien lo use pasa el color que quiera.
 const astralInk = Color(0xFFFFFFFF);
 
 /// Blanco atenuado, para el andamio que no debe competir con el contenido.

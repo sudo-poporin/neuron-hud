@@ -23,7 +23,7 @@ part 'neuron_reveal_state.dart';
 /// `ChromaticBurst` y `SlicedBox` en la suya.
 ///
 /// **La polaridad de las capas es al reves de lo que parece.** En las capas de
-/// esta carpeta `progress` en 0 pinta la capa **completa** y en 1 no pinta nada,
+/// este package `progress` en 0 pinta la capa **completa** y en 1 no pinta nada,
 /// que es la inversa a `HoldProgressBorderPainter`. Una capa entra llevando su
 /// `progress` de 1 a 0 y sale llevandolo de 0 a 1.
 ///
@@ -33,7 +33,7 @@ part 'neuron_reveal_state.dart';
 /// fase de resolucion y ahi se queda, con el esqueleto puesto y el contenido
 /// oculto, hasta que el call site lo ponga en `true`.
 ///
-/// **Es opcional.** Sin el, cada efecto de la carpeta corre en bucle
+/// **Es opcional.** Sin el, cada efecto del package corre en bucle
 /// independiente, que es el modo del rol *ocupado*.
 ///
 /// **Con «Reducir movimiento» prendido pinta el hijo pelado**, sin capas, sin
@@ -124,7 +124,7 @@ class NeuronReveal extends StatefulWidget {
   /// Color de la capa que se corre a la izquierda en el pico de aberracion.
   ///
   /// El default es el cian del frame del pico de `logo_animation.mp4`. Entra por
-  /// parametro porque esta carpeta no puede leer el tema de su consumidor, y hay
+  /// parametro porque este package no puede leer el tema de su consumidor, y hay
   /// consumidores que quieren el pico en su propia paleta.
   final Color chromaticA;
 
@@ -140,8 +140,8 @@ class NeuronReveal extends StatefulWidget {
   /// Color base de las tres capas del revelado.
   ///
   /// El default es el blanco del HUD, que es el de la referencia y el que
-  /// contrasta sobre un fondo oscuro. **Sobre un fondo claro no se ve**, y esta
-  /// carpeta no puede leer el tema de su consumidor: quien la use pasa la tinta
+  /// contrasta sobre un fondo oscuro. **Sobre un fondo claro no se ve**, y un
+  /// package no puede leer el tema de su consumidor: quien lo use pasa la tinta
   /// que su fondo pida.
   ///
   /// **La alpha del color que se pasa se ignora**: cada capa aplica la suya, que

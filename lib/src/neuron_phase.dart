@@ -49,7 +49,7 @@ typedef NeuronPhaseWindow = ({Duration start, Duration end});
 
 /// Lo que hay que pintar en un instante del revelado.
 ///
-/// Los tres valores de capa son el `progress` de las capas de esta carpeta, con
+/// Los tres valores de capa son el `progress` de las capas de este package, con
 /// **su** polaridad: 0 pinta la capa completa y 1 no pinta nada. Es la inversa a
 /// `HoldProgressBorderPainter`, que es el otro painter del repo.
 ///

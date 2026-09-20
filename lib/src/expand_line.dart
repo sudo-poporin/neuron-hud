@@ -60,7 +60,7 @@ class ExpandLine extends StatefulWidget {
   /// Desde donde crece el alto, y donde va la linea.
   ///
   /// Es un `Alignment` absoluto y no un `AlignmentDirectional` a proposito:
-  /// esta carpeta no puede exigir un `Directionality` ancestro, que es
+  /// este package no puede exigir un `Directionality` ancestro, que es
   /// justamente lo que hace inservible a `SizeTransition`.
   final Alignment alignment;
 

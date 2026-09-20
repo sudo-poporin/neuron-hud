@@ -20,7 +20,7 @@ import 'package:flutter/widgets.dart';
 /// **Con «Reducir movimiento» prendido el glifo queda visible y fijo**, y no se
 /// crea ningun `Timer`.
 ///
-/// Es el unico widget de esta carpeta que necesita un `Directionality`
+/// Es el unico widget de este package que necesita un `Directionality`
 /// ancestro: usa un `Row`, y el glifo va del lado del final del texto. En la app
 /// lo pone `WidgetsApp`; en un test hay que envolverlo.
 class TerminalCursor extends StatefulWidget {
@@ -61,8 +61,8 @@ class TerminalCursor extends StatefulWidget {
 
   /// Estilo del glifo.
   ///
-  /// Con `null` hereda el `DefaultTextStyle` del entorno, que es como esta
-  /// carpeta se entera de la tipografia de su consumidor sin importar nada
+  /// Con `null` hereda el `DefaultTextStyle` del entorno, que es como este
+  /// package se entera de la tipografia de su consumidor sin importar nada
   /// suyo.
   final TextStyle? style;
 
@@ -108,7 +108,7 @@ class _TerminalCursorState extends State<TerminalCursor> {
   /// periodo y no el gate.
   void _apply({bool force = false}) {
     // maybeDisableAnimationsOf y no disableAnimationsOf: la segunda lanza si
-    // no hay un MediaQuery ancestro, y esta carpeta no puede exigir uno.
+    // no hay un MediaQuery ancestro, y este package no puede exigir uno.
     //
     // El gate mira el periodo **ya dividido**, que es lo que recibe el Timer:
     // un `Duration(microseconds: 1)` es mayor que cero pero su mitad no, y un

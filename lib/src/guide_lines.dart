@@ -79,8 +79,8 @@ class GuideLines extends StatelessWidget {
   /// lineas en otro lado y eso lee como un salto; correrlas unos pocos pixeles
   /// las deja donde estaban, apenas moviendose.
   ///
-  /// **Este widget no tiene reloj**, igual que las otras tres capas de esta
-  /// carpeta: derivan su layout de sus parametros y no se mueven solas. Quien
+  /// **Este widget no tiene reloj**, igual que las otras tres capas: derivan su
+  /// layout de sus parametros y no se mueven solas. Quien
   /// quiera verlas derivar le mueve este valor desde afuera, que es lo que hace
   /// `NeuronGuideDrift`.
   final double drift;

@@ -106,7 +106,7 @@ class Stagger extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // maybeDisableAnimationsOf y no disableAnimationsOf: la segunda lanza si no
-    // hay un MediaQuery ancestro, y esta carpeta no puede exigir uno para *no*
+    // hay un MediaQuery ancestro, y este package no puede exigir uno para *no*
     // animar.
     final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
 

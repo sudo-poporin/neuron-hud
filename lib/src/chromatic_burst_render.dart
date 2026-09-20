@@ -145,7 +145,7 @@ class RenderChromaticBurst extends RenderProxyBox {
       ..translate(delta.dx, delta.dy)
       ..saveLayer(
         // Bounds nulos: `offset & size` recortaria el desborde del hijo, y las
-        // capas de esta carpeta desbordan a proposito.
+        // capas de este package desbordan a proposito.
         null,
         // El tinte viaja en el `Paint` del `saveLayer` y **no** en un
         // `ColorFiltered` adentro. Un `ColorFiltered` declara

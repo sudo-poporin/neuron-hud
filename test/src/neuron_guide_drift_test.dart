@@ -46,24 +46,31 @@ void main() {
       for (var seed = 0; seed < 32; seed++) {
         final period = neuronGuideDriftPeriod(seed);
 
-        expect(period.inMilliseconds, greaterThanOrEqualTo(3200));
-        expect(period.inMilliseconds, lessThanOrEqualTo(4400));
+        expect(period.inMilliseconds, greaterThanOrEqualTo(3440));
+        expect(period.inMilliseconds, lessThanOrEqualTo(4640));
       }
     });
 
-    test('es más lento que el barrido, que es más lento que el ruido', () {
+    test('es más lento que el barrido, para toda semilla', () {
       // Tres capas al mismo ritmo se leen como una sola cosa parpadeando.
-      expect(
-        neuronGuideDriftPeriod(0).inMilliseconds,
-        greaterThan(neuronSweepPeriod(0).inMilliseconds),
-      );
+      //
+      // **El barrido de semillas es la parte que importa.** Con una sola, los
+      // rangos podian solaparse sin que nadie se enterara: asi estuvieron, y
+      // el invariante se daba vuelta en una de cada veinticuatro.
+      for (var seed = 0; seed < 48; seed++) {
+        expect(
+          neuronGuideDriftPeriod(seed).inMilliseconds,
+          greaterThan(neuronSweepPeriod(seed).inMilliseconds),
+          reason: 'semilla $seed',
+        );
+      }
     });
 
     test('una semilla negativa sigue dando un período del rango', () {
       // El `%` de Dart sobre enteros devuelve siempre un valor no negativo.
       expect(
         neuronGuideDriftPeriod(-3).inMilliseconds,
-        greaterThanOrEqualTo(3200),
+        greaterThanOrEqualTo(3440),
       );
     });
   });
