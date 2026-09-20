@@ -23,9 +23,13 @@ jobs:
 
       # Las exclusiones tienen que ser identicas a las de los dos hooks de
       # .githooks. Si divergen, un lado pasa y el otro falla.
+      #
+      # Del ejemplo se mira example/lib y no example entero: su .dart_tool puede
+      # tener un dart_plugin_registrant.dart generado, y el formato de un
+      # archivo generado es de su generador.
       - name: Check format
         run: |
-          find lib test -name '*.dart' \
+          find lib test example/lib -name '*.dart' \
             -exec dart format --output=none --set-exit-if-changed {} +
 
       - name: Analyze

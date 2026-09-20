@@ -5,6 +5,14 @@ Todos los cambios notables de este proyecto se documentan en este archivo.
 El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y
 el versionado sigue [Semantic Versioning](https://semver.org/lang/es/).
 
+## [No publicado]
+
+### Interno
+
+- App de ejemplo en `example/`: cinco tabs que cubren las cinco familias —los
+  tres roles, el escalonado y el modificador—, cada efecto aislado y en bucle.
+  No cambia nada de lo que el barrel exporta.
+
 ## [1.0.0] - 2026-09-19
 
 Primera versión publicable. `lib/neuron_hud.dart` es el único punto de entrada y

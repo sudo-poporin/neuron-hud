@@ -1,0 +1,30 @@
+# La forma es la del `analysis_options.yaml` de la raiz, no la del example de
+# otro package: con `very_good_analysis` 11 las reglas deprecadas se apagan
+# desde `analyzer: errors:`. Nombrarlas bajo `linter: rules:` —aunque sea para
+# apagarlas— dispara `deprecated_lint` y falla el analisis.
+include: package:very_good_analysis/analysis_options.yaml
+analyzer:
+  errors:
+    unnecessary_await_in_return: ignore
+    one_member_abstracts: ignore
+    discarded_futures: ignore
+    comment_references: ignore
+    invalid_annotation_target: ignore
+    # Esto es una app de demostracion, no una API publica: sus widgets no los
+    # importa nadie. El package si documenta todo lo que exporta.
+    public_member_api_docs: ignore
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
+linter:
+  rules:
+    sort_constructors_first: true
+    sort_pub_dependencies: false
+    flutter_style_todos: false
+    lines_longer_than_80_chars: false
+    comment_references: false
