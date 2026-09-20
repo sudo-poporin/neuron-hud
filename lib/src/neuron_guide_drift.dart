@@ -13,10 +13,17 @@ const neuronGuideDriftAmplitude = 4.0;
 
 /// Cada cuanto las guias completan una ida y vuelta, desfasado por la semilla.
 ///
-/// Entre 3,2 y 4,4 segundos: es un orden de magnitud mas lento que el ruido
-/// —que cambia entre cinco y once veces por segundo— y el doble de lento que el
-/// barrido. Tiene que serlo: las guias son andamio, y andamio que se mueve
-/// rapido deja de leerse como referencia y pasa a competir con el contenido.
+/// Entre 3,44 y 4,64 segundos: es un orden de magnitud mas lento que el ruido
+/// —que cambia entre cinco y once veces por segundo— y mas lento que el
+/// barrido, que llega como mucho a 3,43. Tiene que serlo: las guias son
+/// andamio, y andamio que se mueve rapido deja de leerse como referencia y pasa
+/// a competir con el contenido.
+///
+/// **El piso es 3440 y no un numero redondo a proposito.** Con 3200 los dos
+/// rangos se solapaban y el invariante se daba vuelta en una de cada
+/// veinticuatro semillas —la 6, la 30, la 54—, donde el barrido salia mas lento
+/// que las guias. Subirlo un paso del propio multiplicador lo separa del techo
+/// del barrido sin tocar el desfase de ninguno de los dos.
 ///
 /// El desfase es por el mismo motivo que el de los otros dos relojes del
 /// esqueleto: veinte cajas montadas en el mismo frame y con el mismo periodo se
@@ -25,7 +32,7 @@ const neuronGuideDriftAmplitude = 4.0;
 ///
 /// El `%` de Dart sobre enteros devuelve siempre un valor no negativo.
 Duration neuronGuideDriftPeriod(int seed) =>
-    Duration(milliseconds: 3200 + (seed % 6) * 240);
+    Duration(milliseconds: 3440 + (seed % 6) * 240);
 
 /// Mueve las guias de un lado a otro, apenas, mientras el elemento no resuelva.
 ///
