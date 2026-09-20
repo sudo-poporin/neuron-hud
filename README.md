@@ -247,20 +247,21 @@ El lenguaje visual sale de dos notas del blog oficial de PlatinumGames sobre el
 diseño de la UI de *Astral Chain*, y de los videos que las acompañan. Cada pieza
 de este package apunta a una de las dos:
 
-| Nota | De dónde sale |
+| Nota | Qué trae |
 | --- | --- |
-| 📘 [The Wide World of UI, Part I](https://www.platinumgames.com/official-blog/article/10397) | El diagrama de descomposición del HUD y la animación de sus capas |
-| 📗 [The Wide World of UI, Part II](https://www.platinumgames.com/official-blog/article/10422) | La apertura de los paneles del menú y el estudio de ángulo y desfase |
+| 📘 [The Wide World of UI, Part I](https://www.platinumgames.com/official-blog/article/10397) | Cinco videos: la animación del wordmark, el ruido de los menús, la apertura de los paneles y el estudio de ángulo y desfase |
+| 📗 [The Wide World of UI, Part II](https://www.platinumgames.com/official-blog/article/10422) | Uno: el diagrama de descomposición del HUD y la animación de sus capas |
 
-Qué salió de cada video, para que se pueda contrastar con la fuente:
+Qué salió de cada video, para que se pueda contrastar con la fuente. Los enlaces
+van al archivo en el blog:
 
 | Video | Nota | Piezas |
 | --- | --- | --- |
-| `logo_animation.mp4` | I | `ChromaticBurst` —cian a la izquierda, rojo a la derecha— y `SlicedBox`, cuyas bandas llegan **después** del pico y no a la vez |
-| `hud_inanimation.mp4` | I | Las cuatro capas y el orden en que se forman: `GuideLines` primero, después `DotMatrix` y `BlockNoise` |
-| `menu_noize.mp4` | I | `NoiseSweep` en sus dos intensidades, y el `TerminalCursor` de los headers `MAP_`, `ITEM_` y `LEGION_` |
-| `menu_open.mp4` | II | `ExpandLine`: los paneles no aparecen, se **abren** desde una línea brillante |
-| `036_UIblog_onishi_01.mp4` y `_02.mp4` | II | `Perspective`, del estudio 【角度・ズレ調整】 —«ajuste de ángulo y desfase»— |
+| [`logo_animation.mp4`](https://www.platinumgames.com/official-blog/wp-content/uploads/sites/2/2019/08/logo_animation.mp4) | I | `ChromaticBurst` —cian a la izquierda, rojo a la derecha— y `SlicedBox`, cuyas bandas llegan **después** del pico y no a la vez |
+| [`menu_noize.mp4`](https://www.platinumgames.com/official-blog/wp-content/uploads/sites/2/2019/08/menu_noize.mp4) | I | `NoiseSweep` en sus dos intensidades, y el `TerminalCursor` de los headers `MAP_`, `ITEM_` y `LEGION_` |
+| [`menu_open.mp4`](https://www.platinumgames.com/official-blog/wp-content/uploads/sites/2/2019/08/menu_open.mp4) | I | `ExpandLine`: los paneles no aparecen, se **abren** desde una línea brillante |
+| [`036_UIblog_onishi_01.mp4`](https://www.platinumgames.com/official-blog/wp-content/uploads/sites/2/2019/08/036_UIblog_onishi_01.mp4) y [`_02.mp4`](https://www.platinumgames.com/official-blog/wp-content/uploads/sites/2/2019/08/036_UIblog_onishi_02.mp4) | I | `Perspective`, del estudio 【角度・ズレ調整】 —«ajuste de ángulo y desfase»— |
+| [`hud_inanimation.mp4`](https://www.platinumgames.com/official-blog/wp-content/uploads/sites/2/2019/08/hud_inanimation.mp4) | II | Las cuatro capas y el orden en que se forman: `GuideLines` primero, después `DotMatrix` y `BlockNoise` |
 
 El par de colores por defecto de la aberración —`astralChromaticA` y
 `astralChromaticB`— sale del frame del pico de `logo_animation.mp4`. Son un

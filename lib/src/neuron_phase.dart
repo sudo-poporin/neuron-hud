@@ -4,7 +4,8 @@ part of 'neuron_timeline.dart';
 ///
 /// Salen de `logo_animation.mp4` y de `hud_inanimation.mp4`, los videos del blog
 /// oficial de PlatinumGames en
-/// https://www.platinumgames.com/official-blog/article/10397. Las tres primeras
+/// https://www.platinumgames.com/official-blog/article/10397 y
+/// https://www.platinumgames.com/official-blog/article/10422. Las tres primeras
 /// son la **formacion** del andamio y las cuatro ultimas la **resolucion** de la
 /// pieza; el corte entre las dos es el que separa a las dos referencias.
 enum NeuronPhase {

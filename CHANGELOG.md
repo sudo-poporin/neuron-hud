@@ -7,6 +7,14 @@ el versionado sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [No publicado]
 
+### Corregido
+
+- Tres de los enlaces a las notas del blog de PlatinumGames que documentan cada
+  pieza apuntaban a la nota equivocada: `hud_inanimation.mp4` está en la segunda
+  y no en la primera, y `menu_open.mp4` y los dos videos del estudio de ángulo
+  están en la primera y no en la segunda. Se verificó contra el embebido de cada
+  artículo.
+
 ### Interno
 
 - App de ejemplo en `example/`: cinco tabs que cubren las cinco familias —los

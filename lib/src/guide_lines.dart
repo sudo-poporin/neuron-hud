@@ -9,7 +9,7 @@ part 'guide_lines_painter.dart';
 ///
 /// Es la capa グリッド del diagrama de descomposicion del HUD de Astral Chain, y
 /// es **andamio**: en `hud_inanimation.mp4` —el video del blog oficial de
-/// PlatinumGames en https://www.platinumgames.com/official-blog/article/10397—
+/// PlatinumGames en https://www.platinumgames.com/official-blog/article/10422—
 /// llega antes que cualquier contenido, y se va cuando el elemento resolvio.
 ///
 /// **Esta separado de `TechFrame` justamente porque desborda.** En la
