@@ -62,8 +62,8 @@ class TechFrame extends StatelessWidget {
   /// [strokeWidth]: dentro de un ancestro que clipee, lo que se salga se
   /// pierde.
   ///
-  /// **Este widget no tiene reloj**, igual que las otras tres capas de esta
-  /// carpeta. Quien quiera ver las esquinas moverse le mueve estos valores
+  /// **Este widget no tiene reloj**, igual que las otras tres capas. Quien
+  /// quiera ver las esquinas moverse le mueve estos valores
   /// desde afuera, que es lo que hace `NeuronCornerDrift`.
   final List<Offset> cornerOffsets;
 

@@ -161,8 +161,8 @@ void main() {
     testWidgets('con style nulo hereda el del entorno', (tester) async {
       await pumpCursor(tester);
 
-      // Un TextStyle propio aca seria un AppFonts encubierto: la carpeta no
-      // puede imponer tipografia.
+      // Un TextStyle propio aca seria una tipografia impuesta, y el package no
+      // puede imponerle una a su consumidor.
       expect(tester.widget<Text>(find.text('_')).style, isNull);
 
       await tester.pumpWidget(const SizedBox());

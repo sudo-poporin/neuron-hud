@@ -292,8 +292,8 @@ void main() {
       await tester.pumpWidget(_host(const NeuronReveal(child: child)));
       await tester.pump();
 
-      // El default tiene que reproducir exactamente las constantes de la
-      // carpeta: es lo que hace que agregar el parametro no cambie nada para
+      // El default tiene que reproducir exactamente las constantes del
+      // package: es lo que hace que agregar el parametro no cambie nada para
       // quien no lo pasa.
       expect(
         tester.widget<BlockNoise>(find.byType(BlockNoise)).color,

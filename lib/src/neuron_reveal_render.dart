@@ -46,7 +46,7 @@ class RenderContentOpacity extends RenderProxyBox {
       return;
     }
 
-    // Bounds nulos: las capas de esta carpeta desbordan a proposito.
+    // Bounds nulos: las capas de este package desbordan a proposito.
     context.canvas.saveLayer(
       null,
       Paint()..color = Color.fromARGB(alpha, 0, 0, 0),
