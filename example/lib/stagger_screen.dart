@@ -41,6 +41,10 @@ class _StaggerScreenState extends State<StaggerScreen> {
   @override
   Widget build(BuildContext context) {
     return PeriodicTick(
+      // Ver la pantalla de revelado: la `key` remonta el reloj para que la
+      // repetición manual no quede a merced del próximo tick. Acá entra
+      // también el orden, que cambia lo que hay que volver a mirar.
+      key: ValueKey('$_manual-$_order'),
       period: _replayPeriod,
       builder: (context, tick) => Column(
         children: [
@@ -52,7 +56,7 @@ class _StaggerScreenState extends State<StaggerScreen> {
                 'momento, y recién ahí crece el alto. Sin esa pausa el efecto '
                 'lee como un `scaleY` común.',
             child: KeyedSubtree(
-              key: ValueKey('$tick-$_manual-$_order'),
+              key: ValueKey(tick),
               child: Column(
                 children: [
                   for (var index = 0; index < _rowCount; index++)

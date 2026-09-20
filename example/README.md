@@ -17,9 +17,10 @@ flutter run
 | Stagger | El escalonado entre hermanos | `Stagger` sobre una lista, con los tres ordenes |
 | Desfase | El modificador | `Perspective`, que corre las partes de un elemento unas respecto de otras |
 
-Las pantallas de **Revelado** y **Stagger** tienen un boton para volver a
-correr la secuencia, porque termina: el bucle ahi es a pedido. Las de
-**Ausente** y **Ocupado** no lo necesitan, porque no terminan nunca.
+Las pantallas de **Revelado** y **Stagger** repiten solas, porque su secuencia
+termina: el boton no habilita la repeticion, adelanta la corrida siguiente y
+reinicia el reloj. Las de **Ausente** y **Ocupado** no tienen boton porque no
+terminan nunca.
 
 **Desfase** es la excepcion: `Perspective` es la unica de las cinco familias sin
 reloj propio y sin `progress`. No corre ni en bucle ni una vez —modifica como se

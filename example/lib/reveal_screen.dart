@@ -55,9 +55,14 @@ class _RevealScreenState extends State<RevealScreen> {
   @override
   Widget build(BuildContext context) {
     return PeriodicTick(
+      // La `key` remonta el reloj, y eso es lo que hace que «correr ahora»
+      // signifique algo: sin ella el `Timer.periodic` sigue su cadencia, así
+      // que apretar el botón justo antes de un tick arranca una secuencia que
+      // el tick corta a los pocos milisegundos.
+      key: ValueKey(_manual),
       period: _replayPeriod,
       builder: (context, tick) {
-        final cycle = ValueKey('$tick-$_manual');
+        final cycle = ValueKey(tick);
 
         return Column(
           children: [
