@@ -8,7 +8,7 @@ import 'package:neuron_hud/src/astral_defaults.dart';
 ///
 /// **Es transitoria, no un fondo permanente.** En `hud_inanimation.mp4` —el
 /// video del blog oficial de PlatinumGames en
-/// https://www.platinumgames.com/official-blog/article/10397— la matriz esta
+/// https://www.platinumgames.com/official-blog/article/10422— la matriz esta
 /// durante la formacion y se va cuando el elemento resuelve: con [progress]
 /// en 1 no pinta nada.
 ///

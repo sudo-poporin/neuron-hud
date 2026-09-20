@@ -6,6 +6,18 @@ import 'package:neuron_hud/neuron_hud.dart';
 /// Cuántas filas entran escalonadas.
 const _rowCount = 6;
 
+/// Alto de cada fila, con su separación.
+const _rowHeight = 42.0;
+
+/// Alto reservado para la lista entera.
+///
+/// **Fijo a propósito.** `ExpandLine` abre cada fila desde una línea, así que
+/// mientras entran la columna mide casi nada y lo que está debajo se trepa
+/// hasta arriba y vuelve a bajar. Eso no lee como escalonado, lee como que la
+/// página salta. Con el alto reservado las filas se abren dentro de un marco
+/// quieto, que es lo único que deja ver el efecto.
+const double _listHeight = _rowCount * _rowHeight;
+
 /// Cada cuánto vuelve a entrar la lista.
 ///
 /// Más largo que `maxDelay` más la apertura de la última fila, o el escalonado
@@ -55,21 +67,24 @@ class _StaggerScreenState extends State<StaggerScreen> {
                 'Los dos tramos importan: la línea aparece, se queda un '
                 'momento, y recién ahí crece el alto. Sin esa pausa el efecto '
                 'lee como un `scaleY` común.',
-            child: KeyedSubtree(
-              key: ValueKey(tick),
-              child: Column(
-                children: [
-                  for (var index = 0; index < _rowCount; index++)
-                    Stagger(
-                      index: index,
-                      count: _rowCount,
-                      order: _order,
-                      child: const ExpandLine(
-                        lineColor: astralChromaticA,
-                        child: _Row(),
+            child: SizedBox(
+              height: _listHeight,
+              child: KeyedSubtree(
+                key: ValueKey(tick),
+                child: Column(
+                  children: [
+                    for (var index = 0; index < _rowCount; index++)
+                      Stagger(
+                        index: index,
+                        count: _rowCount,
+                        order: _order,
+                        child: const ExpandLine(
+                          lineColor: astralChromaticA,
+                          child: _Row(),
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -116,7 +131,7 @@ class _Row extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 260,
-      height: 34,
+      height: _rowHeight - 8,
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       alignment: Alignment.centerLeft,

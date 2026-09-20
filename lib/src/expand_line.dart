@@ -10,7 +10,7 @@ part 'expand_line_state.dart';
 /// Abre un panel desde una linea horizontal fina hasta su alto completo.
 ///
 /// Sale de `menu_open.mp4`, el video del blog oficial de PlatinumGames en
-/// https://www.platinumgames.com/official-blog/article/10422: los paneles del
+/// https://www.platinumgames.com/official-blog/article/10397: los paneles del
 /// menu no aparecen, se **abren** — primero la linea brillante, despues el alto.
 ///
 /// **Son dos tramos, y el primero es el que le da el caracter.** La linea

@@ -18,8 +18,8 @@ enum StaggerOrder {
 ///
 /// Sale de `hud_inanimation.mp4` y de `menu_open.mp4`, los videos del blog
 /// oficial de PlatinumGames en
-/// https://www.platinumgames.com/official-blog/article/10397 y
-/// https://www.platinumgames.com/official-blog/article/10422: los elementos del
+/// https://www.platinumgames.com/official-blog/article/10422 y
+/// https://www.platinumgames.com/official-blog/article/10397: los elementos del
 /// HUD **no entran juntos**. Barra de HP arriba a la izquierda, despues el panel
 /// de objetivos a la derecha, despues la esquina inferior izquierda. Cada uno
 /// arranca su propia secuencia con un retraso respecto del anterior.

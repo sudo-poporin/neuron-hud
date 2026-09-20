@@ -9,7 +9,7 @@ part 'perspective_render.dart';
 ///
 /// Es la lectura del estudio 【角度・ズレ調整】 —«ajuste de angulo y desfase»— de
 /// los videos `036_UIblog_onishi_01.mp4` y `_02.mp4` del blog oficial de
-/// PlatinumGames en https://www.platinumgames.com/official-blog/article/10422.
+/// PlatinumGames en https://www.platinumgames.com/official-blog/article/10397.
 ///
 /// **No rota nada.** El estudio pone la version frontal y la version con
 /// perspectiva lado a lado, y lo que cambia entre las dos es que las partes
