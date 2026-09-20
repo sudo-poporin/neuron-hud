@@ -1,5 +1,6 @@
 import 'package:example/absent_screen.dart';
 import 'package:example/busy_screen.dart';
+import 'package:example/offset_screen.dart';
 import 'package:example/reveal_screen.dart';
 import 'package:example/stagger_screen.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +80,7 @@ class _HomeState extends State<_Home> {
 
 /// Un tab: su nombre, su ícono y la pantalla que muestra.
 ///
-/// Las cuatro pantallas se instancian acá, pero instanciar un widget no lo
+/// Las cinco pantallas se instancian acá, pero instanciar un widget no lo
 /// monta: es una descripción. La que entra al árbol es la del tab elegido.
 typedef _Tab = ({String title, IconData icon, Widget screen});
 
@@ -88,4 +89,5 @@ const _tabs = <_Tab>[
   (title: 'REVELADO', icon: Icons.auto_awesome, screen: RevealScreen()),
   (title: 'OCUPADO', icon: Icons.sync, screen: BusyScreen()),
   (title: 'STAGGER', icon: Icons.view_list, screen: StaggerScreen()),
+  (title: 'DESFASE', icon: Icons.layers, screen: OffsetScreen()),
 ];

@@ -9,8 +9,9 @@ el versionado sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 ### Interno
 
-- App de ejemplo en `example/`, con los tres roles del sistema más `Stagger`,
-  cada efecto aislado y en bucle. No cambia nada de lo que el barrel exporta.
+- App de ejemplo en `example/`: cinco tabs que cubren las cinco familias —los
+  tres roles, el escalonado y el modificador—, cada efecto aislado y en bucle.
+  No cambia nada de lo que el barrel exporta.
 
 ## [1.0.0] - 2026-09-19
 
