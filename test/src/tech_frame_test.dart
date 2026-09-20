@@ -55,10 +55,10 @@ void main() {
       // marco se leeria como un rectangulo cerrado.
       final canvas = _RecordingCanvas();
 
-      const TechFramePainter(
+      TechFramePainter(
         bracketLength: 12,
         strokeWidth: 1,
-        color: Color(0xFFFFFFFF),
+        color: const Color(0xFFFFFFFF),
         cornerOffsets: <Offset>[],
       ).paint(canvas, const Size(180, 12));
 
@@ -82,19 +82,19 @@ void main() {
   });
 
   group('TechFramePainter.shouldRepaint', () {
-    const base = TechFramePainter(
+    final base = TechFramePainter(
       bracketLength: 12,
       strokeWidth: 1,
-      color: Color(0xFFFFFFFF),
+      color: const Color(0xFFFFFFFF),
       cornerOffsets: <Offset>[],
     );
 
     test('repinta cuando cambia el largo del corchete', () {
       expect(
-        const TechFramePainter(
+        TechFramePainter(
           bracketLength: 20,
           strokeWidth: 1,
-          color: Color(0xFFFFFFFF),
+          color: const Color(0xFFFFFFFF),
           cornerOffsets: <Offset>[],
         ).shouldRepaint(base),
         isTrue,
@@ -103,10 +103,10 @@ void main() {
 
     test('repinta cuando cambia el ancho del trazo', () {
       expect(
-        const TechFramePainter(
+        TechFramePainter(
           bracketLength: 12,
           strokeWidth: 2,
-          color: Color(0xFFFFFFFF),
+          color: const Color(0xFFFFFFFF),
           cornerOffsets: <Offset>[],
         ).shouldRepaint(base),
         isTrue,
@@ -115,10 +115,10 @@ void main() {
 
     test('repinta cuando cambia el color', () {
       expect(
-        const TechFramePainter(
+        TechFramePainter(
           bracketLength: 12,
           strokeWidth: 1,
-          color: Color(0xFF000000),
+          color: const Color(0xFF000000),
           cornerOffsets: <Offset>[],
         ).shouldRepaint(base),
         isTrue,
@@ -153,5 +153,29 @@ void main() {
 
     expect(frame.bracketLength, 12);
     expect(frame.cornerOffsets, hasLength(4));
+  });
+
+  test('mutar la lista de offsets in place no deja pixeles viejos', () {
+    // `shouldRepaint` compara por contenido, asi que pasar una lista nueva cada
+    // frame anda. Lo que no anda es mutar la misma: los dos painters miran el
+    // mismo objeto, `listEquals` los ve iguales y el repintado no ocurre.
+    final offsets = [const Offset(1, 1), const Offset(2, 2)];
+    final viejo = TechFramePainter(
+      bracketLength: 12,
+      strokeWidth: 1,
+      color: astralInk,
+      cornerOffsets: offsets,
+    );
+
+    offsets[0] = const Offset(9, 9);
+
+    final nuevo = TechFramePainter(
+      bracketLength: 12,
+      strokeWidth: 1,
+      color: astralInk,
+      cornerOffsets: offsets,
+    );
+
+    expect(nuevo.shouldRepaint(viejo), isTrue);
   });
 }

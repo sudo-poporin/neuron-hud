@@ -87,12 +87,24 @@ class TechFrame extends StatelessWidget {
 /// Pinta los ocho segmentos de [TechFrame].
 class TechFramePainter extends CustomPainter {
   /// Pinta los ocho segmentos de [TechFrame].
-  const new({
+  ///
+  /// **Se queda con una copia de [cornerOffsets], y por eso no es `const`.**
+  /// [shouldRepaint] compara la lista por contenido, asi que pasar una lista
+  /// nueva en cada frame funciona. Lo que no funciona es mutar la misma:
+  /// `oldDelegate.cornerOffsets` y `cornerOffsets` serian el mismo objeto,
+  /// `listEquals` los veria iguales y el repintado no ocurriria — sin error, con
+  /// los pixeles viejos en pantalla.
+  ///
+  /// La lista vacia —el default, y el caso de un marco sin deriva— se pasa tal
+  /// cual: no hay nada que copiar y se evita la asignacion.
+  new({
     required this.bracketLength,
     required this.strokeWidth,
     required this.color,
-    required this.cornerOffsets,
-  });
+    required List<Offset> cornerOffsets,
+  }) : cornerOffsets = cornerOffsets.isEmpty
+           ? const <Offset>[]
+           : List<Offset>.unmodifiable(cornerOffsets);
 
   /// Largo de cada segmento, antes del recorte.
   final double bracketLength;
