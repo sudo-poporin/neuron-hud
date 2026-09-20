@@ -12,6 +12,9 @@ el versionado sigue [Semantic Versioning](https://semver.org/lang/es/).
 - App de ejemplo en `example/`: cinco tabs que cubren las cinco familias —los
   tres roles, el escalonado y el modificador—, cada efecto aislado y en bucle.
   No cambia nada de lo que el barrel exporta.
+- Los cuatro archivos de código que pasaban las 200 líneas quedaron debajo, con
+  el corte hecho en `part`s. No cambia nada de lo que el barrel exporta ni de
+  cómo se comporta ninguna pieza.
 
 ## [1.0.0] - 2026-09-19
 
