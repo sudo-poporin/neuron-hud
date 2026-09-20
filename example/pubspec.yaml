@@ -1,0 +1,21 @@
+name: example
+description: "Ejemplo de uso del paquete neuron_hud."
+publish_to: "none"
+version: 1.0.0
+
+environment:
+  sdk: ">=3.13.0 <4.0.0"
+
+dependencies:
+  neuron_hud:
+    path: ../
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^11.0.0
+
+flutter:
+  uses-material-design: true

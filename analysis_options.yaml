@@ -15,9 +15,15 @@ analyzer:
   exclude:
     # `flutter pub get` agrega las siete solo, en cada corrida, y las repone si
     # alguien las borra. Sacarlas es pelearle a la herramienta para que las
-    # vuelva a escribir en el siguiente `pub get`, así que se quedan. Las de
-    # plataforma hoy no matchean nada; van a matchear cuando llegue `example/`
-    # con sus carpetas de Android e iOS.
+    # vuelva a escribir en el siguiente `pub get`, así que se quedan.
+    #
+    # **Las de plataforma no matchean nada, tampoco ahora que existe
+    # `example/`.** Están ancladas a la raíz, así que `example/android/**` no
+    # cae en `android/**`. Lo que cubre las carpetas de plataforma del ejemplo
+    # es su propio `example/analysis_options.yaml`, que las excluye relativas a
+    # sí mismo. Y el `flutter analyze` de acá **sí** analiza `example/lib`:
+    # verificado plantándole un `unused_import` y viéndolo reportado desde la
+    # raíz.
     - build/**
     - android/**
     - ios/**
