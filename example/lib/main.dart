@@ -3,7 +3,7 @@ import 'package:example/busy_screen.dart';
 import 'package:example/offset_screen.dart';
 import 'package:example/reveal_screen.dart';
 import 'package:example/stagger_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:neuron_hud/neuron_hud.dart';
 
 void main() => runApp(const ExampleApp());

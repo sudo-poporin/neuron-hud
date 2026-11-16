@@ -5,6 +5,27 @@ Todos los cambios notables de este proyecto se documentan en este archivo.
 El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y
 el versionado sigue [Semantic Versioning](https://semver.org/lang/es/).
 
+## [2.0.0] - 2026-11-15
+
+### Modificado
+
+- **Cambio que rompe:** el SDK mínimo sube de Dart 3.13 a Dart 3.14
+  (`environment: sdk: ^3.14.0`, Flutter 3.50). Un proyecto en Dart 3.13 ya no
+  resuelve esta versión. La API pública no cambia.
+
+  **Migración:** subir el proyecto a Flutter 3.50 o posterior (Dart 3.14) y
+  apuntar el `ref:` a `v2.0.0`. No hace falta tocar código.
+
+### Interno
+
+- Los tests y la app de ejemplo dejan `package:flutter/material.dart`, deprecado
+  desde Flutter 3.47: los tests que no usan Material importan
+  `package:flutter/widgets.dart`, y los que montan un `MaterialApp`, igual que el
+  ejemplo, pasan a `package:material_ui`. `material_ui` entra como dependencia
+  de desarrollo: quien consume el package no la recibe, y `dependencies:` sigue
+  teniendo solo `flutter`.
+- El lockfile del ejemplo, refrescado con `flutter pub upgrade`.
+
 ## [1.0.0] - 2026-09-19
 
 Primera versión publicable. `lib/neuron_hud.dart` es el único punto de entrada y

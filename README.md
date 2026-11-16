@@ -73,7 +73,7 @@ dependencies:
   neuron_hud:
     git:
       url: https://github.com/sudo-poporin/neuron-hud
-      ref: v1.0.0
+      ref: v2.0.0
 ```
 
 ```dart
