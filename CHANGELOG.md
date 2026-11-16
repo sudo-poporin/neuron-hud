@@ -24,7 +24,7 @@ el versionado sigue [Semantic Versioning](https://semver.org/lang/es/).
   ejemplo, pasan a `package:material_ui`. `material_ui` entra como dependencia
   de desarrollo: quien consume el package no la recibe, y `dependencies:` sigue
   teniendo solo `flutter`.
-- Lockfiles refrescados con `flutter pub upgrade`.
+- El lockfile del ejemplo, refrescado con `flutter pub upgrade`.
 
 ## [1.0.0] - 2026-09-19
 
