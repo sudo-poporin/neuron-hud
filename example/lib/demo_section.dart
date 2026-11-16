@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:neuron_hud/neuron_hud.dart';
 
 /// Un efecto aislado, con su nombre y una linea de explicacion.

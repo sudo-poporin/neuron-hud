@@ -1,5 +1,5 @@
 import 'package:example/demo_section.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:neuron_hud/neuron_hud.dart';
 
 /// El **modificador**: las partes de un elemento, desfasadas.
